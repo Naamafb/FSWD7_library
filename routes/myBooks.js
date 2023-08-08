@@ -46,7 +46,7 @@ router.post(`/:volumeid/deleteBook/users/:userid`, function (req, res) {
   .then((results) => {
     console.log("The book was deleted successfully")
     deleteWaitingList(volumeid)
-    .then((res)=>{
+    .then(()=>{
       console.log("the witing list was deleted successfully")
       findTheReader(volumeid)
       .then((results)=>{
@@ -91,28 +91,36 @@ function findTheReader(volumeId){
 
 
 function sendMessageToTheReader(ownerId, readerInfo, bookInfo) {
-  console.log("reader");
-  console.log(readerInfo);
-  console.log(bookInfo.deleted_date);
+  // console.log("reader");
+  // console.log(readerInfo);
+  // console.log(bookInfo.deleted_date);
+    //const dateString=getDate(bookInfo.deleted_date)
+    const formatDateTime= new Date(bookInfo.deleted_date).toISOString().slice(0,19).replace("T"," ");
+    
+    const title = 'Request to return the book'+bookInfo.book_name;
+    const body = bookInfo.deleted_date + '\nHi '+ readerInfo.first_name +
+    '\n I will be happy to get back my book' + bookInfo.book_name +
+    '\n Thank you \n'+
+    bookInfo.owner_name+
+    '\n phone: '+ bookInfo.owner_phone;
+   
 
-  const title = `Request to return the book ${escapeValue(bookInfo.book_name)}`;
-  const body = ` ${bookInfo.deleted_date}\nHi ${readerInfo.first_name},\nI will be happy to get back my book ${escapeValue(bookInfo.book_name)} that writen by ${escapeValue(bookInfo.author_name)}\nThank you,\n${escapeValue(bookInfo.owner_name)}\nphone number : ${escapeValue(bookInfo.owner_phone)}`;
+    const query = `
+      INSERT INTO library_fswd7.message (sender_id, reciving_id, title, body, recive_date)
+      VALUES ('${ownerId}', '${readerInfo.id}', '${title}', '${body}', '${formatDateTime}')
+    `;
 
-  const query = `
-    INSERT INTO library_fswd7.message (sender_id, reciving_id, title, body, recive_date)
-    VALUES ('${ownerId}', '${readerInfo.id}', '${title}', '${body}', '${bookInfo.deleted_date}')
-  `;
-
-  return sqlConnect(query);
+    return sqlConnect(query);
+  
+}
+const getDate = (today) => {
+  const month = today.getMonth() + 1;
+  const year = today.getFullYear();
+  const date = today.getDate();
+  return `${month}/${date}/${year}`;
 }
 
-function escapeValue(value) {
-  if (typeof value === 'string') {
-    return `'${value.replace(/'/g, "''")}'`;
-  }
-  return value;
-}
-module.exports = {
-  sendMessageToTheReader,router
-};
+
+
+
 module.exports = router;

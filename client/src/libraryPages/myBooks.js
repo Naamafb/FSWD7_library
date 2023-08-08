@@ -42,18 +42,13 @@ function MyBooks(){
     console.log(findMyBooks)
     },[])
 
-    const getDate = () => {
-        const today = new Date();
-        const month = today.getMonth() + 1;
-        const year = today.getFullYear();
-        const date = today.getDate();
-        return `${month}/${date}/${year}`;
-      }
+    
     const deleteBook  = async (volume_id,book_name,author_name,publication_year) => {
     debugger;
     const url = `http://localhost:3000/myBooks/${volume_id}/deleteBook/users/${user.id}`;
+    const dateNow=new Date().toISOString();
     const information ={
-        deleted_date:new Date(),
+        deleted_date:dateNow,
         owner_name: user.first_name,
         owner_phone:user.phone,
         book_name:book_name,

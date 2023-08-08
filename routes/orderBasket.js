@@ -33,7 +33,8 @@ router.get(`/wishList/users/:userid`, function (req, res) {
     INNER JOIN library_fswd7.books ON volumes.book_code = books.id
     WHERE books_borrowed.user_code ='${userid}' 
     AND books_borrowed.confirmation_date IS NOT NULL
-    AND books_borrowed.return_date IS NULL `;
+    AND books_borrowed.return_date IS NULL
+    AND books_borrowed.deleted = 0 `;
     sqlConnect(query)
     .then((results) => {
       console.log(results);
