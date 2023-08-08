@@ -1,0 +1,20 @@
+.errorContainer {
+    text-align: center;
+    margin-top: 100px;
+  }
+  
+  .errorHeading {
+    font-size: 40px;
+    margin-bottom: 20px;
+  }
+  
+  .errorText {
+    font-size: 20px;
+    margin-top: 30px;
+  }
+
+  .errorImage{
+    height: 260px;
+    width: auto;
+    margin-top: 80px;
+  }

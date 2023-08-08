@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+
+.section {
+    /* background-image: url("./background_login.jpg"); */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 5px;
+    padding: 60px 220px;
+    background-color: #fff;
+  }
+  
+  .form h5 {
+    font-size: 32px;
+    margin-bottom: 40px;
+    font-weight: bold;
+    color: mediumblue;
+    margin-top: 20px;
+  }
+  
+  .form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .form-input {
+    padding: 10px 20px;
+    height: 40px;
+    width: 300px;
+    font-size: 18px;
+    border: none;
+    background-color: #e6e6e6;
+    border-radius: 4px;
+  }
+  
+  .btn , .btn-link{
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    margin:5px;
+  }
+
+  .btn{
+    margin-top: 35px;
+    height: 50px;
+    width: 200px;
+    background-color: mediumblue;
+    font-size: 18px;
+  }
+
+  .btn-link{
+    display: flex;
+    text-decoration: none;
+    height: 40px;
+    width: 100px;
+    background-color: #e6e6e6;
+    color: #000000;
+    font-size: 14px;
+  }
+  
+  .btn:hover {
+    background-color:rgba(0, 0, 205, 0.515) ;
+  }
+
+  .btn-link:hover{
+    background-color: #a0a0a096;
+  }

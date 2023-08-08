@@ -1,0 +1,25 @@
+body {
+  background-color: beige;
+  margin-left: 100px;
+}
+
+input {
+  /* color: white; */
+  padding: 8px 8px;
+  margin: 8px 8px;
+  border: none;
+  cursor: pointer;
+  width: 70%;
+  border-radius: 10px;
+  border: rgb(197, 197, 245);
+  border-style: solid;
+}
+.bold-on-submit:focus {
+  font-weight: bold;
+}
+.centered-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}

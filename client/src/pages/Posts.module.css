@@ -1,0 +1,115 @@
+.new-post button{
+  margin: 10px;
+  padding: 5px;
+  width: 90px;
+  height: 40px;
+  border: none;
+  margin-left: 50px;
+  background-color: mediumblue;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.new-post button:hover {
+  background-color: rgba(0, 0, 205, 0.575);
+  scale: 1.1;
+}
+
+.posts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  padding: 10px;
+}
+
+.post-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f4f4f4;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+}
+
+.singleColumn {
+  grid-row: 1;
+  grid-column: span 3;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.new-post{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.new-post textarea{
+  margin: 10px;
+  padding: 10px;
+}
+
+.post-btns{
+  display: flex;
+  margin-top: auto;
+}
+
+.post-btns button{
+  color: #fff;
+  border: none;
+  width: 90px;
+  height: 35px;
+  cursor: pointer;
+  background-color: rgba(0, 65, 205, 0.112);
+  color: rgb(7, 7, 155);
+  margin: 5px;
+  font-size: 14px;
+}
+
+.post-btns :last-child{
+  width: 150px;
+  margin-left: 80px;
+}
+
+.post-btns button:hover {
+  background-color: rgba(0, 65, 205, 0.353);
+}
+
+.edit-post{
+  display: flex;
+  align-items: center;
+}
+
+.edit-post button{
+  height: 30px;
+  margin-left: 20px;
+}
+
+.edit-input{
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-input *{
+  margin: 5px;
+  padding: 10px 30px;
+  width: 300px;
+}
+
+.posts textarea, input{
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border: 2px solid #ccc;
+}
