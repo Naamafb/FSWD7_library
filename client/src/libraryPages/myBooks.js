@@ -42,7 +42,46 @@ function MyBooks(){
     console.log(findMyBooks)
     },[])
 
-    const deleteBook  = (volume_id) => {
+    const getDate = () => {
+        const today = new Date();
+        const month = today.getMonth() + 1;
+        const year = today.getFullYear();
+        const date = today.getDate();
+        return `${month}/${date}/${year}`;
+      }
+    const deleteBook  = async (volume_id,book_name,author_name,publication_year) => {
+    debugger;
+    const url = `http://localhost:3000/myBooks/${volume_id}/deleteBook/users/${user.id}`;
+    const information ={
+        deleted_date:new Date(),
+        owner_name: user.first_name,
+        owner_phone:user.phone,
+        book_name:book_name,
+        author_name:author_name,
+        publication_year:publication_year
+    };
+    const requestDeleteBook = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(information)
+    };
+    try {
+      const res = await fetch(url, requestDeleteBook);
+        if (res.status === 200) 
+            {
+                const updatedMyBooksList = myBooks.filter(item => item.volume_id !== volume_id);
+                localStorage.setItem('myBooksList', JSON.stringify(updatedMyBooksList));
+                setMyBooks(updatedMyBooksList);
+                if (updatedMyBooksList.length === 0) {
+                setFindMyBooks(false);
+                }
+            }
+        }
+     catch (error) {
+      console.log(error);
+    }
 
     }
     const showReader = (volume_id) =>{
@@ -58,7 +97,7 @@ function MyBooks(){
                 console.log(readerForVolumeFromLocal)
             }
             else{
-                const url = `http://localhost:3000/myBooks/${volume_id}`;
+                const url = `http://localhost:3000/myBooks/${volume_id}/users/${user.id}`;
 
                 const requestBookReader = {
                     method: 'GET',
@@ -96,7 +135,7 @@ if (findMyBooks) {
                         <td>{book.author_name}</td>
                         <td>{book.publication_year}</td>
                         <td>
-                            <button onClick={() => deleteBook(book.volume_id)}>Delete book</button>
+                            <button onClick={() => deleteBook(book.volume_id,book.book_name,book.author_name,book.publication_year)}>Delete book</button>
                         </td>
                     </tr>
                 )
@@ -108,7 +147,7 @@ if (findMyBooks) {
                             <td>{book.author_name}</td>
                             <td>{book.publication_year}</td>
                             <td>
-                                <button onClick={() => deleteBook(book.volume_id)}>Delete book</button>
+                                <button onClick={() => deleteBook(book.volume_id,book.book_name,book.author_name,book.publication_year)}>Delete book</button>
                             </td>
                             <td>
                                 <button onClick={() => showReader(book.volume_id)}>Who's the reader?</button>

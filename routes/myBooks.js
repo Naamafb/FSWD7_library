@@ -3,45 +3,7 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql2');
 
-// const sqlPassword = "324170521";
 
-// function sqlConnect(query, values = []) {
-//     return new Promise((resolve, reject) => {
-//       const connection = mysql.createConnection({
-//         host: "localhost",
-//         user: "root",
-//         password: sqlPassword,
-//         database: "library_fswd7",
-//       });
-  
-//       connection.connect((err) => {
-//         if (err) {
-//           console.error("Error connecting to MySQL server: " + err.stack);
-//           reject(err);
-//           return;
-//         }
-//         console.log("Connected to MySQL server");
-  
-//         connection.query(query, values, (err, results) => {
-//           if (err) {
-//             console.error("Error executing query: " + err.code);
-//             reject(err);
-//           }
-  
-//           connection.end((err) => {
-//             if (err) {
-//               console.error("Error closing connection: " + err.stack);
-//               // reject(err);
-//               return;
-//             }
-//             console.log("MySQL connection closed");
-//           });
-  
-//           resolve(results);
-//         });
-//       });
-//     });
-//   }
   //get all books of user
 router.get(`/users/:userid`, function (req, res) {
     const userid=req.params.userid;
@@ -63,16 +25,9 @@ router.get(`/users/:userid`, function (req, res) {
     });
 });
 //get reader of volume
-router.get(`/:volumeid`, function (req, res) {
+router.get(`/:volumeid/users/:userId`, function (req, res) {
     const {volumeid}=req.params;
-    const query= `SELECT DISTINCT *
-    FROM (
-      SELECT *
-      FROM library_fswd7.users
-      JOIN library_fswd7.books_borrowed ON books_borrowed.user_code = users.id
-      WHERE volume_code = '${volumeid}' AND confirmation_date  IS NOT NULL AND return_date IS NULL
-    ) AS joined_result;`;
-    sqlConnect(query)
+    findTheReader(volumeid)
     .then((results) => {
       console.log(results);
       res.status(200).json(results)
@@ -82,4 +37,82 @@ router.get(`/:volumeid`, function (req, res) {
         res.status(500).send("An error occurred");
     });
 });
+
+//delete book
+router.post(`/:volumeid/deleteBook/users/:userid`, function (req, res) {
+  const {volumeid,userid}=req.params;
+  const reqBody=req.body;
+  deleteVolume(volumeid)
+  .then((results) => {
+    console.log("The book was deleted successfully")
+    deleteWaitingList(volumeid)
+    .then((res)=>{
+      console.log("the witing list was deleted successfully")
+      findTheReader(volumeid)
+      .then((results)=>{
+        if (results.length !== 0 ){
+          sendMessageToTheReader(userid,results[0],reqBody)
+          .then(()=>{
+            console.log("the message was sended successfully");
+            res.status(200).send("The book has been deleted")
+          })
+        }
+        else{
+          res.status(200).send("The book has been deleted")
+        }
+      }) 
+    })
+  })
+  .catch((err) => {
+      console.error(err);
+      res.status(500).send("An error occurred");
+  });
+});
+
+function deleteVolume(volumeId){
+  const query=`UPDATE  library_fswd7.volumes SET deleted=1 WHERE volume_id = '${volumeId}'; `;
+  return sqlConnect(query);
+}
+
+function deleteWaitingList(volumeId) {
+  const query=`UPDATE  library_fswd7.books_borrowed SET deleted=1 WHERE volume_code = '${volumeId}' AND confirmation_date IS NULL; `;
+  return sqlConnect(query);
+}
+function findTheReader(volumeId){
+  const query= `SELECT DISTINCT *
+    FROM (
+      SELECT *
+      FROM library_fswd7.users
+      JOIN library_fswd7.books_borrowed ON books_borrowed.user_code = users.id
+      WHERE volume_code = '${volumeId}' AND confirmation_date  IS NOT NULL AND return_date IS NULL
+    ) AS joined_result;`;
+    return sqlConnect(query)
+}
+
+
+function sendMessageToTheReader(ownerId, readerInfo, bookInfo) {
+  console.log("reader");
+  console.log(readerInfo);
+  console.log(bookInfo.deleted_date);
+
+  const title = `Request to return the book ${escapeValue(bookInfo.book_name)}`;
+  const body = ` ${bookInfo.deleted_date}\nHi ${readerInfo.first_name},\nI will be happy to get back my book ${escapeValue(bookInfo.book_name)} that writen by ${escapeValue(bookInfo.author_name)}\nThank you,\n${escapeValue(bookInfo.owner_name)}\nphone number : ${escapeValue(bookInfo.owner_phone)}`;
+
+  const query = `
+    INSERT INTO library_fswd7.message (sender_id, reciving_id, title, body, recive_date)
+    VALUES ('${ownerId}', '${readerInfo.id}', '${title}', '${body}', '${bookInfo.deleted_date}')
+  `;
+
+  return sqlConnect(query);
+}
+
+function escapeValue(value) {
+  if (typeof value === 'string') {
+    return `'${value.replace(/'/g, "''")}'`;
+  }
+  return value;
+}
+module.exports = {
+  sendMessageToTheReader,router
+};
 module.exports = router;
