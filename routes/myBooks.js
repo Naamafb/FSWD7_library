@@ -12,7 +12,7 @@ router.get(`/users/:userid`, function (req, res) {
       SELECT *
       FROM library_fswd7.books
       JOIN library_fswd7.volumes ON books.id = volumes.book_code
-      WHERE owner_code = '${userid}' AND deleted = 0
+      WHERE owner_code = '${userid}' 
     ) AS joined_result`;
     sqlConnect(query)
     .then((results) => {
@@ -97,10 +97,10 @@ function sendMessageToTheReader(ownerId, readerInfo, bookInfo) {
     //const dateString=getDate(bookInfo.deleted_date)
     const formatDateTime= new Date(bookInfo.deleted_date).toISOString().slice(0,19).replace("T"," ");
     
-    const title = 'Request to return the book'+bookInfo.book_name;
+    const title = 'Request to return the book '+ bookInfo.book_name;
     const body = bookInfo.deleted_date + '\nHi '+ readerInfo.first_name +
-    '\n I will be happy to get back my book' + bookInfo.book_name +
-    '\n Thank you \n'+
+    '\nI will be happy to get back my book' + bookInfo.book_name +
+    '\nThank you \n'+
     bookInfo.owner_name+
     '\n phone: '+ bookInfo.owner_phone;
    

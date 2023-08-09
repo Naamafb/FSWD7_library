@@ -58,9 +58,15 @@ router.put(`/myReadingList/returnBook/users/:userid`, function (req, res) {
       if(res.length === 0)
        updateVolumeStatus(reqBody.volume_id)
       else {
+        if(res[0].deleted === 1){
+          console.log("update statuse because of deleted")
+          updateVolumeStatus(reqBody.volume_id)
+        }
+        else{
         console.log("the res is")
         console.log(res[0].request_id)
         updateTheNextReader(res[0].request_id)
+        }
       }
     })
     console.log("this is the res")
