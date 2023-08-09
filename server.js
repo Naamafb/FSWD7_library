@@ -23,6 +23,7 @@ const myBooksRoutes = require('./routes/myBooks');
 const orderBasketRoutes = require('./routes/orderBasket');
 const categoriesRoutes = require('./routes/category');
 const findbookRoutes = require('./routes/findbook');
+const messagesRoutes = require('./routes/messages');
 
  
 
@@ -35,9 +36,7 @@ app.use('/myBooks', myBooksRoutes);
 app.use('/orderBasket', orderBasketRoutes);
 app.use('/category', categoriesRoutes);
 app.use('/findbook', findbookRoutes);
-// app.use('/usersR', usersRRoutes);
-// app.use('/albums', albumsRoutes);
-// app.use('/photos', photosRoutes);
+app.use('/messages', messagesRoutes);
 
 
 // Start the server

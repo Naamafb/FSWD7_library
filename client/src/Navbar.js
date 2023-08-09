@@ -8,6 +8,8 @@ function Navbar() {
     localStorage.removeItem("myBooksList");
     localStorage.removeItem("myWishList");
     localStorage.removeItem("myReadingList");
+    localStorage.removeItem("myMessagesList");
+
     for (let key in localStorage) {
       if (key.startsWith('readerForVolume')) {
         localStorage.removeItem(key);
