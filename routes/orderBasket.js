@@ -47,14 +47,14 @@ router.get(`/wishList/users/:userid`, function (req, res) {
 });
 //return book
 router.put(`/myReadingList/returnBook/users/:userid`, function (req, res) {
-  const userid=req.params.userid;
   const reqBody=req.body;
+  const formatDateTime= new Date(reqBody.dateNow).toISOString().slice(0,19).replace("T"," ");
   console.log(reqBody)
-  updateReturnDate(reqBody.request_id)
+  updateReturnDate(reqBody.request_id,formatDateTime)
   .then((results) => {
     console.log(results);
-  updateReturnDate(reqBody.request_id)
-  findTheNextReader(reqBody.volume_id).then((res)=>{
+  //updateReturnDate(reqBody.request_id,reqBody.dateNow)
+   findTheNextReader(reqBody.volume_id).then((res)=>{
       if(res.length === 0)
        updateVolumeStatus(reqBody.volume_id)
       else {
@@ -64,8 +64,8 @@ router.put(`/myReadingList/returnBook/users/:userid`, function (req, res) {
         }
         else{
         console.log("the res is")
-        console.log(res[0].request_id)
-        updateTheNextReader(res[0].request_id)
+        console.log(res[0].request_id);
+        updateTheNextReader(res[0].request_id,formatDateTime);
         }
       }
     })
@@ -96,8 +96,8 @@ router.post(`/wishList/remove/:request_id/users/:user_id`, function (req, res) {
 
 
 
-function updateReturnDate(requestId) {
-  const query = `UPDATE  library_fswd7.books_borrowed SET return_date=NOW() WHERE request_id = '${requestId}' ;`
+function updateReturnDate(requestId,date) {
+  const query = `UPDATE  library_fswd7.books_borrowed SET return_date='${date}' WHERE request_id = '${requestId}' ;`
 
   return sqlConnect(query);
 }
@@ -115,9 +115,9 @@ function updateVolumeStatus(volumeId){
   const query =`UPDATE library_fswd7.volumes SET availability = 0 WHERE volume_id = '${volumeId}';`
   return sqlConnect(query);
 }
-function updateTheNextReader(requestId){
-  const query = `UPDATE  library_fswd7.books_borrowed SET confirmation_date=NOW() WHERE request_id = '${requestId}' ;`
-
+function updateTheNextReader(requestId,date){
+  const query = `UPDATE  library_fswd7.books_borrowed SET confirmation_date='${date}' WHERE request_id = '${requestId}' ;`
+  console.log(query);
   return sqlConnect(query);
 }
 module.exports = router;

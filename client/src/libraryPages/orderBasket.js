@@ -57,12 +57,14 @@ function OrderBasket(){
     const returnBook = async (request_id,volume_id) => {
       debugger;
         const url = `http://localhost:3000/orderBasket/myReadingList/returnBook/users/${user.id}`;
+
+        const dateNow=new Date().toISOString();
         const requestUpdateBooksBorrowed = {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({request_id,volume_id}),
+          body: JSON.stringify({request_id,volume_id,dateNow}),
         };
         try {
           const res = await fetch(url, requestUpdateBooksBorrowed);
