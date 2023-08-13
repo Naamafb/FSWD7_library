@@ -4,6 +4,18 @@ import { FaTrash, FaEdit, FaSave } from 'react-icons/fa';
 // import styles from "../Login.module.css";
 import styles from "../css/addNewBook.css";
 
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import InputLabel from '@mui/material/InputLabel';
+
+import Checkbox from '@mui/material/Checkbox';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import { Button } from "@mui/material";
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
+
+
 import CreateNewBook from "./createNewBook";
 
 function AddNewBook() {
@@ -21,7 +33,7 @@ function AddNewBook() {
     availability: false,
     borrower_username: ""
   });
-  const navigate = useNavigate();
+  const myBooksFromLocal = JSON.parse(localStorage.getItem('myBooksList'));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,6 +71,8 @@ function AddNewBook() {
   //בדיקה האם הספר קיים בקשימת הספרים
   const checknookexist = async () => {
     console.log("checknookexist");
+    console.log(newbook.book_name);
+    setIsExist(false);
     if (newbook.book_name != "") {
       const url = `http://localhost:3000/book/${newbook.book_name}`;
       const requestOptions = {
@@ -86,6 +100,19 @@ function AddNewBook() {
             console.log(newbook);
             setBookDeatiles(true);
             setIsExist(true);
+            setIsFieldEnabled(false);
+          //   var newBook = {
+          //     book_id: u[0].id,
+          //     author_name:  u[0].author_name,
+          //     availability: false,
+          //     publication_year: u[0].publication_year
+          // };
+          // console.log(myBooksFromLocal);
+          // myBooksFromLocal.push(newBook);
+          // console.log(myBooksFromLocal);
+
+          // localStorage.setItem('myBooksList', JSON.stringify(myBooksFromLocal));
+          
           }
           else {
             setBookDeatiles(true);
@@ -104,59 +131,128 @@ function AddNewBook() {
   }
   return (
     <section className={styles.section}>
-      <form className={styles.form} >
-        {/* onSubmit={handleSubmit}> */}
+    <form className={styles.form}>
         <h5>What is the book name?</h5>
         <div className={styles["form-row"]}>
-          <input
-            type="text"
-            placeholder="book_name"
-            className={styles["form-input"]}
-            id="book_name"
-            value={newbook.book_name}
-            onChange={(e) => setBook({ ...newbook, book_name: e.target.value })} // עדכון השדה של השם ב-user
-          />
+            <TextField
+                type="text"
+                placeholder="book_name"
+                className={styles["form-input"]}
+                id="book_name"
+                value={newbook.book_name}
+                onChange={(e) =>
+                    setBook({ ...newbook, book_name: e.target.value })
+                }
+            />
         </div>
-        <button type="button" onClick={checknookexist}>check book</button>
-        {bookDeatiles ?
-          <div>
-            {isBookExist
-              ? <div>
-                <div className={styles["form-row"]}>
-                  <input
-                    type="text"
-                    placeholder="author_name"
-                    className={styles["form-input"]}
-                    id="author_name"
-                    value={newbook.author_name}
-                    onChange={(e) => setBook({ ...newbook, author_name: e.target.value })} // עדכון השדה של השם ב-user
-                    disabled={!isFieldEnabled}
-                  />
-                </div>
-                <div className={styles["form-row"]}>
-                  <input
-                    type="year"
-                    placeholder="publication_year"
-                    className={styles["form-input"]}
-                    id="publication_year"
-                    value={newbook.publication_year}
-                    onChange={(e) => setBook({ ...newbook, publication_year: e.target.value })} // עדכון השדה של השם ב-user
-                    disabled={!isFieldEnabled}
+        <Button type="button" onClick={checknookexist}>
+            Check Book
+        </Button>
+        {bookDeatiles ? (
+            <div>
+                {isBookExist ? (
+                    <div>
+                        <div className={styles["form-row"]}>
+                            <TextField
+                                type="text"
+                                placeholder="author_name"
+                                className={styles["form-input"]}
+                                id="author_name"
+                                value={newbook.author_name}
+                                onChange={(e) =>
+                                    setBook({ ...newbook, author_name: e.target.value })
+                                }
+                                disabled={!isFieldEnabled}
+                            />
+                        </div>
+                        <div className={styles["form-row"]}>
+                            <TextField
+                                type="number"
+                                placeholder="publication_year"
+                                className={styles["form-input"]}
+                                id="publication_year"
+                                value={newbook.publication_year}
+                                onChange={(e) =>
+                                    setBook({ ...newbook, publication_year: e.target.value })
+                                }
+                                disabled={!isFieldEnabled}
+                            />
+                        </div>
+                        <Button
+                            type="submit"
+                            onClick={handleSubmit}
+                            className={styles.btn}
+                            variant="contained"
+                            color="primary"
+                        >
+                            Add Book
+                        </Button>
+                    </div>
+                ) : (
+                    <div>
+                        <CreateNewBook book_name={newbook.book_name} />
+                    </div>
+                )}
+            </div>
+        ) : (
+            <div></div>
+        )}
+    </form>
+</section>
+    // <section className={styles.section}>
+    //   <form className={styles.form} >
+    //     {/* onSubmit={handleSubmit}> */}
+    //     <h5>What is the book name?</h5>
+    //     <div className={styles["form-row"]}>
+    //       <input
+    //         type="text"
+    //         placeholder="book_name"
+    //         className={styles["form-input"]}
+    //         id="book_name"
+    //         value={newbook.book_name}
+    //         onChange={(e) => setBook({ ...newbook, book_name: e.target.value })} // עדכון השדה של השם ב-user
+    //       />
+    //     </div>
+    //     <button type="button" onClick={checknookexist}>check book</button>
+    //     {bookDeatiles ?
+    //       <div>
+    //         {isBookExist
+    //           ? <div>
+    //             <div className={styles["form-row"]}>
+    //               <input
+    //                 type="text"
+    //                 placeholder="author_name"
+    //                 className={styles["form-input"]}
+    //                 id="author_name"
+    //                 value={newbook.author_name}
+    //                 onChange={(e) => setBook({ ...newbook, author_name: e.target.value })} // עדכון השדה של השם ב-user
+    //                 disabled={!isFieldEnabled}
+    //               />
+    //             </div>
+    //             <div className={styles["form-row"]}>
+    //               <input
+    //                 type="year"
+    //                 placeholder="publication_year"
+    //                 className={styles["form-input"]}
+    //                 id="publication_year"
+    //                 value={newbook.publication_year}
+    //                 onChange={(e) => setBook({ ...newbook, publication_year: e.target.value })} // עדכון השדה של השם ב-user
+    //                 disabled={!isFieldEnabled}
 
-                  />
-                </div>
-                <button type="submit" onClick={handleSubmit} className={styles.btn}>
-                  ADD BOOK
-                </button>
-              </div>
-              :
-              <div>
-                <CreateNewBook book_name={newbook.book_name} />
+    //               />
+    //             </div>
+    //             <button type="submit" onClick={handleSubmit} className={styles.btn}>
+    //               ADD BOOK
+    //             </button>
+    //           </div>
+    //           :
+    //           <div>
+    //             <CreateNewBook book_name={newbook.book_name} />
 
-              </div>}
-          </div> : <div></div>}
-      </form>
-    </section>
+    //           </div>}
+    //       </div> : <div></div>}
+    //   </form>
+    // </section>
   );
 }
 
