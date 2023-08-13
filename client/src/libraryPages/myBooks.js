@@ -132,16 +132,18 @@ function MyBooks(){
 
  let myBooksHtml = null;
 
-    const renderReaderInfo = (book) => {
+    const renderReaderInfo = (book,deleted) => {
         return (
             <React.Fragment key={book.volume_id}>
                 <tr>
                     <td>{book.book_name}</td>
                     <td>{book.author_name}</td>
                     <td>{book.publication_year}</td>
+                    {deleted === 0 &&(
                     <td>
                         <button onClick={() => deleteBook(book.volume_id, book.book_name, book.author_name, book.publication_year)}>Delete book</button>
                     </td>
+                    )}
                     <td>
                         <button onClick={() => showReader(book.volume_id)}>Who's the reader?</button>
                     </td>
@@ -185,9 +187,9 @@ function MyBooks(){
                         </tr>
                     );
                 } else if (book.availability === 1 && book.deleted === 0) {
-                    return renderReaderInfo(book);
+                    return renderReaderInfo(book,0);
                 } else if (book.availability === 1 && book.deleted === 1) {
-                    return renderReaderInfo(book);
+                    return renderReaderInfo(book,1);
                 }
             });
         } else {

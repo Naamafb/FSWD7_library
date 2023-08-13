@@ -27,7 +27,8 @@ function Messages(){
       fetch(url, requestMessages)
         .then((response) => response.json())
         .then((data) => {
-          const sortedMessages = [...data].sort((a, b) => b.recive_date - a.recive_date);
+          const sortedMessages = [...data].sort((a, b) => new Date(b.recive_date) -  new Date(a.recive_date));
+
           setMyMessages(sortedMessages);
           if(sortedMessages.length>0)
            setFindMessages(true);

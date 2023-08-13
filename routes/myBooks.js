@@ -97,12 +97,12 @@ function sendMessageToTheReader(ownerId, readerInfo, bookInfo) {
     //const dateString=getDate(bookInfo.deleted_date)
     const formatDateTime= new Date(bookInfo.deleted_date).toISOString().slice(0,19).replace("T"," ");
     
-    const title = 'Request to return the book '+ bookInfo.book_name;
+    const title = 'Request to return the book '+bookInfo.book_name;
     const body = bookInfo.deleted_date + '\nHi '+ readerInfo.first_name +
-    '\nI will be happy to get back my book' + bookInfo.book_name +
-    '\nThank you \n'+
+    '\nI will be happy to get back my book ' + bookInfo.book_name +
+    '\n\nThank you \n'+
     bookInfo.owner_name+
-    '\n phone: '+ bookInfo.owner_phone;
+    '\nphone: '+ bookInfo.owner_phone;
    
 
     const query = `
