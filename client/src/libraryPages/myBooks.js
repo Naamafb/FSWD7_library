@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useParams, useEffect, useState, version } from "react";
 import { FaTrash, FaEdit, FaSave } from 'react-icons/fa';
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+
 import styles from "./Info.module.css";
 import React from "react";
 function MyBooks(){
@@ -130,95 +132,100 @@ function MyBooks(){
     }
 
 
- let myBooksHtml = null;
-
-    const renderReaderInfo = (book,deleted) => {
-        return (
-            <React.Fragment key={book.volume_id}>
-                <tr>
-                    <td>{book.book_name}</td>
-                    <td>{book.author_name}</td>
-                    <td>{book.publication_year}</td>
-                    {deleted === 0 &&(
-                    <td>
-                        <button onClick={() => deleteBook(book.volume_id, book.book_name, book.author_name, book.publication_year)}>Delete book</button>
-                    </td>
-                    )}
-                    <td>
-                        <button onClick={() => showReader(book.volume_id)}>Who's the reader?</button>
-                    </td>
-                </tr>
-                <tr className={styles.bookReader} style={{ visibility: book.volume_id === currentVolume && currentReader !== null && currentReader.volume_code === book.volume_id ? 'visible' : 'collapse' }}>
-                    <td colSpan="6">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <th>Reader name</th>
-                                    <th>Phone</th>
-                                    <th>Email</th>
-                                    <th>Borrowed date</th>
-                                </tr>
-                                <tr>
-                                    <td>{currentReader?.first_name} {currentReader?.last_name}</td>
-                                    <td>{currentReader?.phone}</td>
-                                    <td>{currentReader?.email}</td>
-                                    <td>{currentReader?.confirmation_date}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-            </React.Fragment>
-        );
-    };
-
-    if (findMyBooks) {
-        if (myBooks.length > 0) {
-            myBooksHtml = myBooks.map((book) => {
-                if (book.availability === 0 && book.deleted === 0) {
-                    return (
-                        <tr key={book.volume_id}>
-                            <td>{book.book_name}</td>
-                            <td>{book.author_name}</td>
-                            <td>{book.publication_year}</td>
-                            <td>
-                                <button onClick={() => deleteBook(book.volume_id, book.book_name, book.author_name, book.publication_year)}>Delete book</button>
-                            </td>
-                        </tr>
-                    );
-                } else if (book.availability === 1 && book.deleted === 0) {
-                    return renderReaderInfo(book,0);
-                } else if (book.availability === 1 && book.deleted === 1) {
-                    return renderReaderInfo(book,1);
-                }
-            });
-        } else {
-            myBooksHtml = <tr><td colSpan="6">No books found.</td></tr>;
+        let myBooksHtml = null;
+    
+        const renderReaderInfo = (book, deleted) => {
+            return (
+                <React.Fragment key={book.volume_id}>
+                    <TableRow>
+                        <TableCell>{book.book_name}</TableCell>
+                        <TableCell>{book.author_name}</TableCell>
+                        <TableCell>{book.publication_year}</TableCell>
+                        {deleted === 0 && (
+                            <TableCell>
+                                <Button onClick={() => deleteBook(book.volume_id, book.book_name, book.author_name, book.publication_year)}>Delete book</Button>
+                            </TableCell>
+                        )}
+                        <TableCell>
+                            <Button onClick={() => showReader(book.volume_id)}>Who's the reader?</Button>
+                        </TableCell>
+                    </TableRow>
+                    <TableRow className={styles.bookReader} style={{ visibility: book.volume_id === currentVolume && currentReader !== null && currentReader.volume_code === book.volume_id ? 'visible' : 'collapse' }}>
+                        <TableCell colSpan={6}>
+                            <Table>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell>Reader name</TableCell>
+                                        <TableCell>Phone</TableCell>
+                                        <TableCell>Email</TableCell>
+                                        <TableCell>Borrowed date</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>{currentReader?.first_name} {currentReader?.last_name}</TableCell>
+                                        <TableCell>{currentReader?.phone}</TableCell>
+                                        <TableCell>{currentReader?.email}</TableCell>
+                                        <TableCell>{currentReader?.confirmation_date}</TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </TableCell>
+                    </TableRow>
+                </React.Fragment>
+            );
+        };
+    
+        if (findMyBooks) {
+            if (myBooks.length > 0) {
+                myBooksHtml = myBooks.map((book) => {
+                    if (book.availability === 0 && book.deleted === 0) {
+                        return (
+                            <TableRow key={book.volume_id}>
+                                <TableCell>{book.book_name}</TableCell>
+                                <TableCell>{book.author_name}</TableCell>
+                                <TableCell>{book.publication_year}</TableCell>
+                                <TableCell>
+                                    <Button onClick={() => deleteBook(book.volume_id, book.book_name, book.author_name, book.publication_year)}>Delete book</Button>
+                                </TableCell>
+                            </TableRow>
+                        );
+                    } else if (book.availability === 1 && book.deleted === 0) {
+                        return renderReaderInfo(book, 0);
+                    } else if (book.availability === 1 && book.deleted === 1) {
+                        return renderReaderInfo(book, 1);
+                    }
+                    return null;
+                });
+            } else {
+                myBooksHtml = <TableRow><TableCell colSpan={6}>No books found.</TableCell></TableRow>;
+            }
         }
-
+    
         return (
             <div>
-            {myBooksHtml !== null&&(
-                <div className={styles["user-card"]}>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Book Name</th>
-                                <th>Author</th>
-                                <th>Publishing year</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {myBooksHtml}
-                        </tbody>
-                    </table>
-                </div>
+                {myBooksHtml !== null ? (
+                    <div className={styles["user-card"]}>
+                        <TableContainer component={Paper}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Book Name</TableCell>
+                                        <TableCell>Author</TableCell>
+                                        <TableCell>Publishing year</TableCell>
+                                        <TableCell>Action</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {myBooksHtml}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </div>
+                ) : (
+                    <p>you don't have books</p>
                 )}
             </div>
-        )
-    } else {
-        return <p>you don't have books</p>;
+        );
     }
-}
+
 
 export default MyBooks

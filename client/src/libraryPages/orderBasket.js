@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useParams, useEffect, useState } from "react";
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+
 import { FaTrash, FaEdit, FaSave } from 'react-icons/fa';
 import styles from "./Info.module.css";
 
@@ -138,87 +140,88 @@ function OrderBasket(){
         .catch(() => setFindMyReadingList(false));
     }
     },[])
-    let myWhisListHtml=null;
-    let myReadingListHtml=null;
-    
-    if (FindMyWishList){
-        myWhisListHtml = myWishList.map((book)=>{
-            return(
-                <tr key={book.volume_id}>
-                    <td>{book.book_name}</td>
-                    <td>{book.author_name}</td>
-                    <td>{book.publication_year}</td>
-                    <td>{book.request_date}</td>
-                    <td>
-                    <button onClick={() => deleteBookFromMyWishList(book.request_id)}>Delete</button>
-                    </td>
-                </tr>
-            )}
-        )
-    }
-    
-    if (FindMyReadingList){
-        myReadingListHtml = myReadingList.map((book)=>{
-            return(
-                <tr key={book.volume_id}>
-                    <td>{book.book_name}</td>
-                    <td>{book.author_name}</td>
-                    <td>{book.publication_year}</td>
-                    <td>{book.confirmation_date}</td>
-                    <td>
-                    <button onClick={() => returnBook(book.request_id,book.volume_id)}>Return book</button>
-                    </td>
-                </tr>
-            )}
-        )
-    }
-   
+    let myWhisListHtml = null;
+    let myReadingListHtml = null;
 
-         
-    
+    if (FindMyWishList) {
+        myWhisListHtml = myWishList.map((book) => (
+            <TableRow key={book.volume_id}>
+                <TableCell>{book.book_name}</TableCell>
+                <TableCell>{book.author_name}</TableCell>
+                <TableCell>{book.publication_year}</TableCell>
+                <TableCell>{book.request_date}</TableCell>
+                <TableCell>
+                    <Button onClick={() => deleteBookFromMyWishList(book.request_id)}>Delete</Button>
+                </TableCell>
+            </TableRow>
+        ));
+    }
+
+    if (FindMyReadingList) {
+        myReadingListHtml = myReadingList.map((book) => (
+            <TableRow key={book.volume_id}>
+                <TableCell>{book.book_name}</TableCell>
+                <TableCell>{book.author_name}</TableCell>
+                <TableCell>{book.publication_year}</TableCell>
+                <TableCell>{book.confirmation_date}</TableCell>
+                <TableCell>
+                    <Button onClick={() => returnBook(book.request_id, book.volume_id)}>Return book</Button>
+                </TableCell>
+            </TableRow>
+        ));
+    }
+
     return (
         <div>
-          {myWhisListHtml!==null ? (
-            <div className={styles["user-card"]}>
-              <h1> My Wish List</h1>
-              <table>
-                <tr>
-                  <th>Book Name</th>
-                  <th>Author</th>
-                  <th>Publishing year</th>
-                  <th>Request Date</th>
-                </tr>
-                <tbody>
-                  {myWhisListHtml}
-                </tbody>
-              </table>
-            </div>
-          ):
-          <p>you don't have wish list</p>
-          }
-      
-          {myReadingListHtml!==null  ? (
-            <div className={styles["user-card"]}>
-              <h1> My reading list</h1>
-              <table>
-                <tr>
-                  <th>Book Name</th>
-                  <th>Author</th>
-                  <th>Publishing year</th>
-                  <th>Since when have I had the book?</th>
-                </tr>
-                <tbody>
-                  {myReadingListHtml}
-                </tbody>
-              </table>
-            </div>
-          ):
-          <p>you don't have reading list </p>}
+            {myWhisListHtml !== null ? (
+                <div className={styles["user-card"]}>
+                    <h1>My Wish List</h1>
+                    <TableContainer component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Book Name</TableCell>
+                                    <TableCell>Author</TableCell>
+                                    <TableCell>Publishing year</TableCell>
+                                    <TableCell>Request Date</TableCell>
+                                    <TableCell>Action</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {myWhisListHtml}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </div>
+            ) : (
+                <p>you don't have wish list</p>
+            )}
+
+            {myReadingListHtml !== null ? (
+                <div className={styles["user-card"]}>
+                    <h1>My reading list</h1>
+                    <TableContainer component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Book Name</TableCell>
+                                    <TableCell>Author</TableCell>
+                                    <TableCell>Publishing year</TableCell>
+                                    <TableCell>Since when have I had the book?</TableCell>
+                                    <TableCell>Action</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {myReadingListHtml}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </div>
+            ) : (
+                <p>you don't have reading list</p>
+            )}
         </div>
-      );
-    
-    
-      
+    );
 
 
 }
