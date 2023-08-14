@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useParams, useEffect, useState, version } from "react";
+import { Button, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { FaTrash, FaEdit, FaSave } from 'react-icons/fa';
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-
 import styles from "./Info.module.css";
 import React from "react";
 function MyBooks(){
@@ -170,7 +169,9 @@ function MyBooks(){
                                 <TableCell>{book.author_name}</TableCell>
                                 <TableCell>{book.publication_year}</TableCell>
                                 <TableCell>
-                                    <Button onClick={() => deleteBook(book.volume_id, book.book_name, book.author_name, book.publication_year)}>Delete book</Button>
+                                    <Button  onClick={() => deleteBook(book.volume_id, book.book_name, book.author_name, book.publication_year)}>
+                                        Delete book
+                                    </Button>
                                 </TableCell>
                             </TableRow>
                         );
@@ -194,10 +195,18 @@ function MyBooks(){
                             <Table>
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Book Name</TableCell>
-                                        <TableCell>Author</TableCell>
-                                        <TableCell>Publishing year</TableCell>
-                                        <TableCell>Action</TableCell>
+                                        <TableCell>
+                                            <Typography variant="h6" style={{ fontWeight: 'bold',color:'rgb(105,105,105)' }}>Book Name</Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography variant="h6" style={{  fontWeight: 'bold', color:'rgb(105,105,105)' }}>Author</Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography variant="h6" style={{  fontWeight: 'bold', color: 'rgb(105,105,105)' }}>Publishing year</Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography variant="h6" style={{  fontWeight: 'bold', color: 'rgb(105,105,105)' }}>Action</Typography>
+                                        </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -213,5 +222,4 @@ function MyBooks(){
         );
     }
 
-
-export default MyBooks
+export default MyBooks;

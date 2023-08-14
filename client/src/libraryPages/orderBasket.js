@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useParams, useEffect, useState } from "react";
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Button, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 
 import { FaTrash, FaEdit, FaSave } from 'react-icons/fa';
 import styles from "./Info.module.css";
@@ -169,11 +169,31 @@ function OrderBasket(){
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Book Name</TableCell>
-                                    <TableCell>Author</TableCell>
-                                    <TableCell>Publishing year</TableCell>
-                                    <TableCell>Request Date</TableCell>
-                                    <TableCell>Action</TableCell>
+                                    <TableCell>
+                                    <Typography variant="h6" style={{ fontWeight: 'bold',color:'rgb(105,105,105)' }}>
+                                      Book Name
+                                    </Typography>
+                                      </TableCell>
+                                    <TableCell>
+                                    <Typography variant="h6" style={{ fontWeight: 'bold',color:'rgb(105,105,105)' }}>
+                                      Author
+                                     </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                    <Typography variant="h6" style={{ fontWeight: 'bold',color:'rgb(105,105,105)' }}>
+                                      Publishing year
+                                      </Typography>
+                                      </TableCell>
+                                    <TableCell>
+                                    <Typography variant="h6" style={{ fontWeight: 'bold',color:'rgb(105,105,105)' }}>
+                                      Request Date
+                                      </Typography>
+                                      </TableCell>
+                                    <TableCell>
+                                    <Typography variant="h6" style={{ fontWeight: 'bold',color:'rgb(105,105,105)' }}>
+                                      Action
+                                      </Typography>
+                                      </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -193,11 +213,31 @@ function OrderBasket(){
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Book Name</TableCell>
-                                    <TableCell>Author</TableCell>
-                                    <TableCell>Publishing year</TableCell>
-                                    <TableCell>Since when have I had the book?</TableCell>
-                                    <TableCell>Action</TableCell>
+                                    <TableCell>
+                                    <Typography variant="h6" style={{ fontWeight: 'bold',color:'rgb(105,105,105)' }}>
+                                      Book Name
+                                      </Typography>
+                                      </TableCell>
+                                    <TableCell>
+                                    <Typography variant="h6" style={{ fontWeight: 'bold',color:'rgb(105,105,105)' }}>
+                                      Author
+                                      </Typography>
+                                      </TableCell>
+                                    <TableCell>
+                                    <Typography variant="h6" style={{ fontWeight: 'bold',color:'rgb(105,105,105)' }}>
+                                      Publishing year
+                                      </Typography>
+                                      </TableCell>
+                                    <TableCell>
+                                    <Typography variant="h6" style={{ fontWeight: 'bold',color:'rgb(105,105,105)' }}>
+                                      Since when have I had the book?
+                                      </Typography>
+                                      </TableCell>
+                                    <TableCell>
+                                    <Typography variant="h6" style={{ fontWeight: 'bold',color:'rgb(105,105,105)' }}>
+                                      Action
+                                      </Typography>
+                                      </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
