@@ -231,7 +231,7 @@ const getAddBookBorrowedAsBorrowedQuery = (userCode, volumeCode) => {
 };
 
 const changeAvailavility=(volume_id)=>{
-  const q=`UPDATE volumes set availability=1 where book_code='${volume_id}'`;
+  const q=`UPDATE volumes set availability=1 where volume_id='${volume_id}'`;
   return sqlConnect(q);
 }
 
