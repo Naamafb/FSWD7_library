@@ -25,8 +25,6 @@ const BookComponent = () => {
     const user=JSON.parse(localStorage.getItem("currentUser"));
 
     useEffect(() => {
-        // const Cuser = JSON.parse(localStorage.getItem("currentUser"));
-        // setUser(Cuser);
         const myFilterBooksList = JSON.parse(localStorage.getItem('myFilterBooksList'));
         console.log(myFilterBooksList);
         set(myFilterBooksList);
@@ -61,7 +59,6 @@ const BookComponent = () => {
             })
             .then((u) => {
                 console.log(u);
-                // updatemyReadingList(u)
             })
             .catch((error) => {
                 console.error(error);
@@ -143,7 +140,7 @@ const BookComponent = () => {
                     )}
                 </div>
                 <div className="book-list-container">
-                    {/* <h1>Book List</h1> */}
+                    <h1>Book List</h1>
                     <BookList books={books_volums} onBookSelect={handleBookSelect} />
                 </div>
             </div>

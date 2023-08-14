@@ -37,7 +37,7 @@ router.post("/volumes", function (req, res) {
 router.post("/newBook", function (req, res) {
     // const idis = req.body;
     const { newbook, selectedCategories } = req.body;
-
+console.log("newBook");
     console.log(newbook);
     console.log(selectedCategories);
     const addBookQuery = `INSERT INTO books (book_name, author_name,publication_year) VALUES ('${newbook.book_name}', '${newbook.author_name}','${newbook.publication_year}')`;
@@ -72,6 +72,7 @@ const addBookCategories = (id, category_names) => {
 //book_categories
 router.post("/book_categories", function (req, res) {
     const idis = req.body;
+    console.log("idis");
     console.log(idis);
     const addbook_categoriesQuery = `INSERT INTO book_categories (book_id, category_id) VALUES ('${idis.book_id}', '${idis.category_id}')`;
     sqlConnect(addbook_categoriesQuery)

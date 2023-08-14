@@ -12,10 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { Button } from "@mui/material";
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-
-
-
-// import {} '../Login.'
+import Container from '@mui/material/Container';
 
 function CreateNewBook({ book_name }) {
     console.log(book_name);
@@ -116,95 +113,136 @@ function CreateNewBook({ book_name }) {
     };
 
     return (
-        // <section >
-        //     <form >
-        <div>
-                <h5>the book does not exist, please add book deatiles:</h5>
-                <Grid container spacing={2}>
-
-                <div className={styles["form-row"]}>
-                        <TextField
-                            label="Author name"
-                            variant="outlined"
-                            fullWidth
-                            // className={styles["form-input"]}
-
-                            // type="text"
-                            // placeholder="author_name"
-                            value={newbook.author_name}
-                            onChange={(e) => setBook({ ...newbook, author_name: e.target.value })} // עדכון השדה של השם ב-user
-                        />
-                    </div>                            
-                    <div className={styles["form-row"]}>
-                        <TextField
-                            label="publication year"
-                            variant="outlined"
-                            fullWidth
-                            // type="year"
-                            // placeholder="publication_year"
-                            value={newbook.publication_year}
-                            onChange={(e) => setBook({ ...newbook, publication_year: e.target.value })} // עדכון השדה של השם ב-user
-                        />
-                    </div>                            
-                </Grid>
-                <div>
-                    {/* {categories.map((category, index) => (
-                        <div key={index}>
-                            <label> 
-                                <input
-                                    type="checkbox"
-                                    value={category.id}
-                                    onChange={handleCategoryChange}
-                                    // checked={selectedCategories.includes(category.id)}
-                                />
-                                {category.category_name}
-                            </label>
-                        </div>
-                    ))} */}
-                    <div>
-                    <FormControl sx={{ m: 1, width: 300 }}>
-                            <InputLabel>Select Categories</InputLabel>
-                            <Select
-                                multiple
-                                value={selectedCategories}
-                                onChange={handleCategoryChange}
-                                renderValue={(selected) => (
-                                    <div>
-                                        {categories
-                                            .filter((category) => selected.includes(category.id))
-                                            .map((category) => (
-                                                <span key={category.id}>{category.category_name}, </span>
-                                            ))}
-                                    </div>
-                                )}
-                            >
-                                {categories.map((category) => (
-                                    <MenuItem key={category.category_name} value={category.id}>
-                                        <FormControlLabel
-                                            control={
-                                                <Checkbox
-                                                    // checked={selectedCategories.includes(category.id)}
-                                                    onChange={handleCategoryChange}
-                                                    value={category.id}
-                                                    color="primary"
-                                                />
-                                            }
-                                            label={category.category_name}
-                                        />
-                                    </MenuItem>
+        <Container maxWidth="sm">
+        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+            <h5>The book does not exist, please add book details:</h5>
+        </div>
+        <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <TextField
+                    label="Author name"
+                    variant="outlined"
+                    fullWidth
+                    value={newbook.author_name}
+                    onChange={(e) => setBook({ ...newbook, author_name: e.target.value })}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <TextField
+                    label="Publication year"
+                    variant="outlined"
+                    fullWidth
+                    value={newbook.publication_year}
+                    onChange={(e) => setBook({ ...newbook, publication_year: e.target.value })}
+                />
+            </Grid>
+        </Grid>
+        <div style={{ marginTop: '20px' }}>
+            <FormControl sx={{ m: 1, width: '100%' }}>
+                <InputLabel>Select Categories</InputLabel>
+                <Select
+                    multiple
+                    value={selectedCategories}
+                    onChange={handleCategoryChange}
+                    renderValue={(selected) => (
+                        <div>
+                            {categories
+                                .filter((category) => selected.includes(category.id))
+                                .map((category) => (
+                                    <span key={category.id}>{category.category_name}, </span>
                                 ))}
-                            </Select>
-                        </FormControl>
-                    </div>
-                </div>
-                
-                <Button variant="contained" color="primary" onClick={handleSubmit}>
-                    Add Book
-                </Button>
-                </div>
-        //     </form>
-        // </section>
-    );
+                        </div>
+                    )}
+                >
+                    {categories.map((category) => (
+                        <MenuItem key={category.category_name} value={category.id}>
+                            <FormControlLabel
+                                control={<Checkbox value={category.id} color="primary" />}
+                                label={category.category_name}
+                            />
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+        </div>
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            <Button variant="contained" color="primary" onClick={handleSubmit}>
+                Add Book
+            </Button>
+        </div>
+    </Container>
+);
+        // <div>
+        //     <h5>the book does not exist, please add book deatiles:</h5>
+        //     <Grid container spacing={2}>
+
+        //         <div className={styles["form-row"]}>
+        //             <TextField
+        //                 label="Author name"
+        //                 variant="outlined"
+        //                 fullWidth
+        //                 // className={styles["form-input"]}
+
+        //                 // type="text"
+        //                 // placeholder="author_name"
+        //                 value={newbook.author_name}
+        //                 onChange={(e) => setBook({ ...newbook, author_name: e.target.value })} // עדכון השדה של השם ב-user
+        //             />
+        //         </div>
+        //         <div className={styles["form-row"]}>
+        //             <TextField
+        //                 label="publication year"
+        //                 variant="outlined"
+        //                 fullWidth
+        //                 // type="year"
+        //                 // placeholder="publication_year"
+        //                 value={newbook.publication_year}
+        //                 onChange={(e) => setBook({ ...newbook, publication_year: e.target.value })} // עדכון השדה של השם ב-user
+        //             />
+        //         </div>
+        //     </Grid>
+        //     <div>
+        //         <div>
+        //             <FormControl sx={{ m: 1, width: 300 }}>
+        //                 <InputLabel>Select Categories</InputLabel>
+        //                 <Select
+        //                     multiple
+        //                     value={selectedCategories}
+        //                     onChange={handleCategoryChange}
+        //                     renderValue={(selected) => (
+        //                         <div>
+        //                             {categories
+        //                                 .filter((category) => selected.includes(category.id))
+        //                                 .map((category) => (
+        //                                     <span key={category.id}>{category.category_name}, </span>
+        //                                 ))}
+        //                         </div>
+        //                     )}
+        //                 >
+        //                     {categories.map((category) => (
+        //                         <MenuItem key={category.category_name} value={category.id}>
+        //                             <FormControlLabel
+        //                                 control={
+        //                                     <Checkbox
+        //                                         onChange={handleCategoryChange}
+        //                                         value={category.id}
+        //                                         color="primary"
+        //                                     />
+        //                                 }
+        //                                 label={category.category_name}
+        //                             />
+        //                         </MenuItem>
+        //                     ))}
+        //                 </Select>
+        //             </FormControl>
+        //         </div>
+        //     </div>
+
+        //     <Button variant="contained" color="primary" onClick={handleSubmit}>
+        //         Add Book
+        //     </Button>
+        // </div>
+    // );
 }
 
 

@@ -58,7 +58,7 @@ router.post('/borrowBook', function (req, res) {
       console.log("borrowBook");
       // console.log(result);
       // console.log(res);
-      res.status(200);
+      res.status(200).json(result);
     })
     .catch((err) => {
       console.error(err);
@@ -72,7 +72,7 @@ router.post('/addBookToWishlist', function (req, res) {
 
   addBookBorrowedAsPending(data.owner_code, data.volume_id)
     .then((result) => {
-      res.status(200);
+      res.status(200).json(result);
     })
     .catch((err) => {
       console.error(err);

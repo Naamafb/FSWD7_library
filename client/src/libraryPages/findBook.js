@@ -11,6 +11,8 @@ import Checkbox from '@mui/material/Checkbox';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import Grid from '@mui/material/Grid';
+
 import { json } from "react-router-dom";
 
 function FindBook() {
@@ -121,18 +123,40 @@ function FindBook() {
     };
     return (
         <div className="App">
-            <form onSubmit={handleSearch} className="searchForm">
+    <form onSubmit={handleSearch} className="searchForm">
+        <Grid container spacing={2}>
+            <Grid item xs={12} sm={6} md={3}>
                 <TextField
                     label="Book Name"
                     value={bookName}
                     onChange={(e) => setBookName(e.target.value)}
+                    fullWidth
+                    sx={{ width: '100%', textAlign: 'center' }}
+                    inputProps={{ style: { fontSize: 14 } }}
                 />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
                 <TextField
                     label="Publication Year"
                     value={publicationYear}
                     onChange={(e) => setPublicationYear(e.target.value)}
+                    fullWidth
+                    sx={{ width: '100%', textAlign: 'center' }}
+                    inputProps={{ style: { fontSize: 14 } }}
                 />
-                <FormControl sx={{ m: 1, width: 300 }}>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+                <TextField
+                    label="Author name"
+                    value={authorName}
+                    onChange={(e) => setAuthorName(e.target.value)}
+                    fullWidth
+                    sx={{ width: '100%', textAlign: 'center' }}
+                    inputProps={{ style: { fontSize: 14 } }}
+                />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+            <FormControl sx={{ width: '100%', textAlign: 'center' }}>
                     <InputLabel id="demo-multiple-checkbox-label">Select Categories</InputLabel>
                     <Select
                         MenuProps={MenuProps}
@@ -141,7 +165,6 @@ function FindBook() {
                         multiple
                         value={selectedCategories}
                         input={<OutlinedInput label="Tag" />}
-
                         onChange={handleCategoryChange}
                         renderValue={(selected) => (
                             <div>
@@ -170,29 +193,98 @@ function FindBook() {
                         ))}
                     </Select>
                 </FormControl>
-                <TextField
-                    label="Author name"
-                    value={authorName}
-                    onChange={(e) => setAuthorName(e.target.value)}
-                />
-                <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                // startIcon={<SearchIcon />}
-                >
-                    Search
-                </Button>
-            </form>
-            <div>
-                {showFilteredBooks ?
-                    (<BookComponent />)
-                    : (<div> no results
-                    </div>)
-                }
-            </div>
+            </Grid>
+           
+        </Grid>
+        <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+        >
+            Search
+        </Button>
+    </form>
+    <div>
+        {showFilteredBooks ?
+            (<BookComponent />)
+            : (<div> no results </div>)
+        }
+    </div>
+</div>
 
-        </div>
+        // <div className="App">
+        //     <form onSubmit={handleSearch} className="searchForm">
+        //         <TextField
+        //             label="Book Name"
+        //             value={bookName}
+        //             onChange={(e) => setBookName(e.target.value)}
+        //         />
+        //         <TextField
+        //             label="Publication Year"
+        //             value={publicationYear}
+        //             onChange={(e) => setPublicationYear(e.target.value)}
+        //         />
+        //         <FormControl sx={{ m: 1, width: 300 }}>
+        //             <InputLabel id="demo-multiple-checkbox-label">Select Categories</InputLabel>
+        //             <Select
+        //                 MenuProps={MenuProps}
+        //                 labelId="demo-multiple-checkbox-label"
+        //                 id="demo-multiple-checkbox"
+        //                 multiple
+        //                 value={selectedCategories}
+        //                 input={<OutlinedInput label="Tag" />}
+
+        //                 onChange={handleCategoryChange}
+        //                 renderValue={(selected) => (
+        //                     <div>
+        //                         {categories
+        //                             .filter((category) => selected.includes(category.id))
+        //                             .map((category) => (
+        //                                 <span key={category.id}>{category.category_name}, </span>
+        //                             ))}
+        //                     </div>
+        //                 )}
+        //             >
+        //                 {categories.map((category, index) => (
+        //                     <MenuItem key={index} value={category.id}>
+        //                         <FormControlLabel
+        //                             control={
+        //                                 <Checkbox
+        //                                     // checked={selectedCategories.includes(category.id)}
+        //                                     onChange={handleCategoryChange}
+        //                                     value={category.id}
+        //                                     color="primary"
+        //                                 />
+        //                             }
+        //                             label={category.category_name}
+        //                         />
+        //                     </MenuItem>
+        //                 ))}
+        //             </Select>
+        //         </FormControl>
+        //         <TextField
+        //             label="Author name"
+        //             value={authorName}
+        //             onChange={(e) => setAuthorName(e.target.value)}
+        //         />
+        //         <Button
+        //             type="submit"
+        //             variant="contained"
+        //             color="primary"
+        //         // startIcon={<SearchIcon />}
+        //         >
+        //             Search
+        //         </Button>
+        //     </form>
+        //     <div>
+        //         {showFilteredBooks ?
+        //             (<BookComponent />)
+        //             : (<div> no results
+        //             </div>)
+        //         }
+        //     </div>
+
+        // </div>
     );
 
 }
