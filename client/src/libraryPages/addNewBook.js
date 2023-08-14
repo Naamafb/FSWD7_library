@@ -33,9 +33,10 @@ function AddNewBook() {
     availability: false,
     borrower_username: ""
   });
+  const navigate = useNavigate();
   const myBooksFromLocal = JSON.parse(localStorage.getItem('myBooksList'));
 
-  const handleSubmit = async (e) => {
+  const handleSubmit =  (e) => {
     e.preventDefault();
     console.log("handleSubmit");
     const url = "http://localhost:3000/book/volumes";
@@ -49,6 +50,7 @@ function AddNewBook() {
 
     fetch(url, requestOptions)
       .then((response) => {
+        console.log("bdika");
         console.log(response.status);
         if (response.status === 202) {
           console.log(response);
@@ -59,17 +61,13 @@ function AddNewBook() {
         //  }
       })
       .then((u) => {
+        window.location.reload();
+
         console.log(u);
         console.log("the book added");
-        setBook({ book_id: '',
-        book_name: "",
-        author_name: "",
-        title: "",
-        publication_year: "",
-        owner_code: user.id,
-        availability: false,
-        borrower_username: ""})
-        setBookDeatiles(false);
+        // setBookDeatiles(false);
+        // navigate(`/users/${user.username}/addNewBook`);
+
       })
       .catch((error) => {
         console.error(error);

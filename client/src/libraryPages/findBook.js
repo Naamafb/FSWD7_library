@@ -1,5 +1,4 @@
 import { useParams, useEffect, useState } from "react";
-// import BookComponent from './showBooks'
 import BookComponent from './Content'
 
 import TextField from '@mui/material/TextField';
@@ -30,11 +29,7 @@ function FindBook() {
 
     useEffect(() => {
         console.log("useeffect");
-        // const myCategoriesFromLocal = JSON.parse(localStorage.getItem('myCategoriesList'));
-        // if (myCategoriesFromLocal) {
-        //     setCategories(myCategoriesFromLocal);
-        // }
-        // else {
+
             const url = "http://localhost:3000/category";
             const requestOptions = {
                 method: "GET",
@@ -189,21 +184,6 @@ function FindBook() {
                     Search
                 </Button>
             </form>
-
-            {/* <div className="searchResults">
-                {searchResults.length === 0 ? (
-                    <Typography variant="body1">No results found.</Typography>
-                ) : (
-                    searchResults.map(result => (
-                        <Card key={result.bookId} className="searchResultCard">
-                            <CardContent>
-                                <Typography variant="h6">{result.bookName}</Typography>
-                                <Typography variant="body2">{result.authorName} ({result.publicationYear})</Typography>
-                            </CardContent>
-                        </Card>
-                    ))
-                )}
-            </div> */}
             <div>
                 {showFilteredBooks ?
                     (<BookComponent  />)

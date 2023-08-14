@@ -30,6 +30,8 @@ function CreateNewBook({ book_name }) {
         availability: false,
         borrower_username: ""
     });
+    const navigate = useNavigate();
+
     const [categories, setCategories] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
     useEffect(() => {
@@ -66,32 +68,6 @@ function CreateNewBook({ book_name }) {
                 });
         }
     }, []);
-    // useEffect(() => {
-    //     console.log("useeffect");
-    //     const url = "http://localhost:3000/category";
-    //     const requestOptions = {
-    //         method: "GET",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         }
-    //     };
-    //     fetch(url, requestOptions)
-    //         .then((response) => {
-    //             if (!response.ok) {
-    //                 throw new Error("Network response was not ok");
-    //             }
-    //             return response.json();
-    //         })
-    //         .then((data) => {
-    //             // התוצאה כאן היא מערך של הקטגוריות
-    //             console.log(data);
-    //             setCategories(data);
-    //         })
-    //         .catch((error) => {
-    //             console.error("Error fetching categories:", error);
-    //             alert("Error fetching categories");
-    //         });
-    // }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -120,6 +96,7 @@ function CreateNewBook({ book_name }) {
             .then((u) => {
                 console.log(u);
                 console.log("the book added");
+                window.location.reload();
             })
             .catch((error) => {
                 console.error(error);
@@ -139,8 +116,9 @@ function CreateNewBook({ book_name }) {
     };
 
     return (
-        <section >
-            <form >
+        // <section >
+        //     <form >
+        <div>
                 <h5>the book does not exist, please add book deatiles:</h5>
                 <Grid container spacing={2}>
 
@@ -223,8 +201,9 @@ function CreateNewBook({ book_name }) {
                 <Button variant="contained" color="primary" onClick={handleSubmit}>
                     Add Book
                 </Button>
-            </form>
-        </section>
+                </div>
+        //     </form>
+        // </section>
     );
 }
 
