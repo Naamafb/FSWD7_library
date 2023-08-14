@@ -8,13 +8,6 @@ function Navbar() {
     localStorage.removeItem("myMessagesList");
     localStorage.removeItem("myFilterBooksList");
     localStorage.removeItem("myCategoriesList");
-
-
-    for (let key in localStorage) {
-      if (key.startsWith('readerForVolume')) {
-        localStorage.removeItem(key);
-      }
-    }
   };
   return (
     <>

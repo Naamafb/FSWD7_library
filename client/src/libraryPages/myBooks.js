@@ -93,12 +93,6 @@ function MyBooks(){
             setCurrentReader(null) ;
         }
         else{
-            const readerForVolumeFromLocal = JSON.parse(localStorage.getItem(`readerForVolume=${volume_id}`));
-            if(readerForVolumeFromLocal!==null){
-                setCurrentReader(readerForVolumeFromLocal);
-                console.log(readerForVolumeFromLocal)
-            }
-            else{
                 const url = `http://localhost:3000/myBooks/${volume_id}/users/${user.id}`;
 
                 const requestBookReader = {
@@ -113,11 +107,10 @@ function MyBooks(){
                     .then((data) => {
                         console.log(data[0])
                     setCurrentReader(data[0]);
-                    localStorage.setItem(`readerForVolume=${volume_id}`, JSON.stringify(data[0]));
                     })
                     .catch(() => setFindMyBooks(false));
 
-            }
+            
             setCurrentVolume(volume_id);
 
         }

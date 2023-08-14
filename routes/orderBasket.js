@@ -55,6 +55,8 @@ router.put(`/myReadingList/returnBook/users/:userid`, function (req, res) {
     console.log(results);
   //updateReturnDate(reqBody.request_id,reqBody.dateNow)
    findTheNextReader(reqBody.volume_id).then((res)=>{
+    console.log("find the next reader")
+    console.log(res)
       if(res.length === 0)
        updateVolumeStatus(reqBody.volume_id)
       else {
