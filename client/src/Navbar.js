@@ -5,9 +5,6 @@ function Navbar() {
   const username = JSON.parse(localStorage.getItem("currentUser")).username;
   const handleLogout =()=> {
     localStorage.removeItem("currentUser")
-    localStorage.removeItem("myBooksList");
-    localStorage.removeItem("myWishList");
-    localStorage.removeItem("myReadingList");
     localStorage.removeItem("myMessagesList");
     localStorage.removeItem("myFilterBooksList");
     localStorage.removeItem("myCategoriesList");

@@ -83,12 +83,6 @@ function OrderBasket(){
     useEffect(()=>{
     debugger
     // ספרים שאני נמצא ברשימת המתנה על מנת להשאיל אותם
-    console.log("Fetching myWishList...");
-    const myWishListFromLocal = JSON.parse(localStorage.getItem('myWishList'));
-    if (Array.isArray(myWishListFromLocal) && myWishListFromLocal.length>0) {
-        setMyWishList(myWishListFromLocal);
-        setFindMyWishList(true);
-    } else {
       const url = `http://localhost:3000/orderBasket/wishList/users/${user.id}`;
 
       const requestMyWishList = {
@@ -107,18 +101,13 @@ function OrderBasket(){
           setMyWishList(data);
           if(data.length>0)
            setFindMyWishList(true);
-          localStorage.setItem('myWishList', JSON.stringify(data));
         })
         .catch(() => setFindMyWishList(false));
-    }
+    
    //ספרים שאני כרגע קורא 
    console.log("Fetching myReadingList...");
-    const myReadingListFromLocal = JSON.parse(localStorage.getItem('myReadingList'));
-    if (Array.isArray(myReadingListFromLocal)&& myReadingListFromLocal.length>0) {
-        setMyReadingList(myReadingListFromLocal);
-        setFindMyReadingList(true);
-    } else {
-      const url = `http://localhost:3000/orderBasket/myReadingList/users/${user.id}`;
+     
+      const url1 = `http://localhost:3000/orderBasket/myReadingList/users/${user.id}`;
 
       const requestMyReadingList = {
         method: 'GET',
@@ -127,7 +116,7 @@ function OrderBasket(){
         },
       };
       console.log("Fetching myReadingList from server...");
-      fetch(url, requestMyReadingList)
+      fetch(url1, requestMyReadingList)
         .then((response) => response.json())
         .then((data) => {
           //const sortedWishList = [...data].sort((a, b) => a.id - b.id);
@@ -138,7 +127,7 @@ function OrderBasket(){
           localStorage.setItem('myReadingList', JSON.stringify(data));
         })
         .catch(() => setFindMyReadingList(false));
-    }
+    
     },[])
     let myWhisListHtml = null;
     let myReadingListHtml = null;
