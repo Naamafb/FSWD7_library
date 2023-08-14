@@ -49,6 +49,7 @@ function AddNewBook() {
 
     fetch(url, requestOptions)
       .then((response) => {
+        console.log(response.status);
         if (response.status === 202) {
           console.log(response);
           return response.json();
@@ -60,8 +61,15 @@ function AddNewBook() {
       .then((u) => {
         console.log(u);
         console.log("the book added");
-        // localStorage.setItem("currentUser", JSON.stringify(user));
-        // navigate(`/users/${user.username}/info`);
+        setBook({ book_id: '',
+        book_name: "",
+        author_name: "",
+        title: "",
+        publication_year: "",
+        owner_code: user.id,
+        availability: false,
+        borrower_username: ""})
+        setBookDeatiles(false);
       })
       .catch((error) => {
         console.error(error);
@@ -94,25 +102,11 @@ function AddNewBook() {
         })
         .then((u) => {
           if (u[0]?.author_name) {
-
-            // setBook({...newbook,author_name:u[0].author_name})
             setBook({ ...newbook, book_id: u[0].id, author_name: u[0].author_name, publication_year: u[0].publication_year })
             console.log(newbook);
             setBookDeatiles(true);
             setIsExist(true);
             setIsFieldEnabled(false);
-          //   var newBook = {
-          //     book_id: u[0].id,
-          //     author_name:  u[0].author_name,
-          //     availability: false,
-          //     publication_year: u[0].publication_year
-          // };
-          // console.log(myBooksFromLocal);
-          // myBooksFromLocal.push(newBook);
-          // console.log(myBooksFromLocal);
-
-          // localStorage.setItem('myBooksList', JSON.stringify(myBooksFromLocal));
-          
           }
           else {
             setBookDeatiles(true);

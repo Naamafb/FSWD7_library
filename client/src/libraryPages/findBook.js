@@ -12,6 +12,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import { json } from "react-router-dom";
 
 function FindBook() {
 
@@ -25,14 +26,15 @@ function FindBook() {
     const [selectedCategories, setSelectedCategories] = useState([]);
 
     const [volums, setV] = useState([]);
+    const [showFilteredBooks,setBooks]=useState(false);
 
     useEffect(() => {
         console.log("useeffect");
-        const myCategoriesFromLocal = JSON.parse(localStorage.getItem('myCategoriesList'));
-        if (myCategoriesFromLocal) {
-            setCategories(myCategoriesFromLocal);
-        }
-        else {
+        // const myCategoriesFromLocal = JSON.parse(localStorage.getItem('myCategoriesList'));
+        // if (myCategoriesFromLocal) {
+        //     setCategories(myCategoriesFromLocal);
+        // }
+        // else {
             const url = "http://localhost:3000/category";
             const requestOptions = {
                 method: "GET",
@@ -57,13 +59,14 @@ function FindBook() {
                     console.error("Error fetching categories:", error);
                     alert("Error fetching categories");
                 });
-        }
+        // }
     }, []);
+
     const handleSearch = async (event) => {
         event.preventDefault();
         console.log("handleSearch");
         console.log(bookName);
-        const filterModel = { book_name: bookName, publicationYear: publicationYear, categories: selectedCategories }
+        const filterModel = { book_name: bookName, publication_year: publicationYear, categories: selectedCategories,author_name: authorName}
         const url = "http://localhost:3000/findbook/filter";
         const requestOptions = {
             method: "POST",
@@ -86,12 +89,17 @@ function FindBook() {
             })
             .then((u) => {
                 console.log(u);
-                // console.log(u[0]);
+                if(u.length>0){
+                console.log(volums);
                 setV(u);
                 console.log(volums);
+                setBooks(true);
+                localStorage.setItem('myFilterBooksList', JSON.stringify(u));
+                }
                 console.log("ok search");
             })
             .catch((error) => {
+                setBooks(false)
                 console.error(error);
                 alert(error);
             });
@@ -197,8 +205,8 @@ function FindBook() {
                 )}
             </div> */}
             <div>
-                {volums!=[] ?
-                    (<BookComponent books={volums} />)
+                {showFilteredBooks ?
+                    (<BookComponent  />)
                     : (<div> no results
                     </div>)
                 }

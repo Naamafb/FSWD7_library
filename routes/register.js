@@ -1,11 +1,6 @@
 const { sqlConnect } = require('./connectTodb.js');
-// const { newPassword, findUserId } = require('./help.js');
-
 const express = require('express');
 const router = express.Router();
-const mysql = require('mysql2');
-
-const sqlPassword = "bat7Yoffe";
 
 // register
 router.post("/", function (req, res) {
@@ -20,7 +15,6 @@ router.post("/", function (req, res) {
       const addUser = `INSERT INTO users ( username,first_name,last_name,email,phone,address,age) VALUES ('${username}', '${first_name}', '${last_name}','${email}', '${phone}','${address}','${age}' )`;
       sqlConnect(addUser)
         .then((results) => {
-          // console.log(results[0]);
           findUserId(username)
             .then((res) => {
               console.log(res[0].id);
@@ -36,7 +30,8 @@ router.post("/", function (req, res) {
           console.error(err);
           res.status(500).send("An error occurred");
         });
-      res.status(200).json(username);
+        username.add
+      res.status(200).json(username,res[0].id);
     })
     .catch((err) => {
       console.error(err);

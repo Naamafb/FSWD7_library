@@ -9,6 +9,9 @@ function Navbar() {
     localStorage.removeItem("myWishList");
     localStorage.removeItem("myReadingList");
     localStorage.removeItem("myMessagesList");
+    localStorage.removeItem("myFilterBooksList");
+    localStorage.removeItem("myCategoriesList");
+
 
     for (let key in localStorage) {
       if (key.startsWith('readerForVolume')) {

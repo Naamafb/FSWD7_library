@@ -3,28 +3,28 @@ const router = express.Router();
 const { sqlConnect } = require('./connectTodb.js');
 
 router.post('/filter', function (req, res) {
-  const  filterModel  = req.body;
+  const filterModel = req.body;
   console.log(filterModel);
-  getBooks(filterModel)
-    .then((books) => {
-      if(!books){
-        res.status(200).json([]);
+  getVolums(filterModel)
+    .then((volums) => {
+      if (volums.length === 0) {
+        return res.status(200).json([]);
       }
-      getBooksCategories(books)
+      getBooksCategories(volums)
         .then((booksCategories) => {
           getCategories(booksCategories)
             .then((categories) => {
-              getUsers(books)
+              getUsers(volums)
                 .then((users) => {
-                  const result = 
-      
+                  const result =
+
                     generateReaultList(
-                      books,
+                      volums,
                       booksCategories,
                       categories,
                       users
-                    
-                  );
+
+                    );
                   res.status(200).json(result);
                 })
                 .catch((err) => {
@@ -49,51 +49,54 @@ router.post('/filter', function (req, res) {
     });
 });
 
-router.post('/borrowBook', function (req, res){
-  const { data } = req.body;
-
-  addBookBorrowedAsBorrowed(data.userCode, data.volumeCode)
-  .then((result) => {
-    res.status(200).send("ok")
-  })
-  .catch((err) => {
-    console.error(err);
-    res.status(500).send('An error occurred');
-  });
+router.post('/borrowBook', function (req, res) {
+  const data = req.body;
+  console.log(data);
+  addBookBorrowedAsBorrowed(data.owner_code, data.volume_id)
+    .then((result) => {
+      changeAvailavility(data.volume_id);
+      console.log("borrowBook");
+      // console.log(result);
+      // console.log(res);
+      res.status(200);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('An error occurred');
+    });
 });
 
-router.post('/addBookToWishlist', function (req, res){
-  const { data } = req.body;
+router.post('/addBookToWishlist', function (req, res) {
+  const data = req.body;
+  console.log(data);
 
-  addBookBorrowedAsPending(data.userCode, data.volumeCode)
-  .then((result) => {
-    res.status(200).send("ok")
-  })
-  .catch((err) => {
-    console.error(err);
-    res.status(500).send('An error occurred');
-  });
+  addBookBorrowedAsPending(data.owner_code, data.volume_id)
+    .then((result) => {
+      res.status(200);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('An error occurred');
+    });
 });
 
-const getBooks = (filterModel) => {
-  console.log(filterModel);
-  const q = getBooksQuery(filterModel);
+const getVolums = (filterModel) => {
+  const q = getVolumsQuery(filterModel);
   return sqlConnect(q);
 };
 
-const generateReaultList = (books, booksCategories, categories, users) => {
+const generateReaultList = (volums, booksCategories, categories, users) => {
   var result = {};
 
-  for (const book of books) {
-    const bookName = book.book_name;
+  for (const volum of volums) {
+    const bookName = volum.book_name;
 
     if (!result[bookName]) {
       const categoriesList = getBookCategoriesList(
         booksCategories,
         categories,
-        book.book_code
+        volum.book_code
       );
-      // const owner = users.filter((u) => u.id == book.owner_code);
       result[bookName] = {
         bookName: bookName,
         volumes: [],
@@ -101,12 +104,11 @@ const generateReaultList = (books, booksCategories, categories, users) => {
         // owner: owner,
       };
     }
-    const owner = users.filter((u) => u.id == book.owner_code);
-    book.owner = owner
-    result[bookName].volumes.push(book);
+    const owner = users.filter((u) => u.id == volum.owner_code);
+    volum.owner = owner
+    result[bookName].volumes.push(volum);
   }
-
-  return result;
+  return Object.values(result);
 };
 
 const getBookCategoriesList = (booksCategories, categories, bookId) => {
@@ -152,18 +154,18 @@ const getBooksCategoriesQuery = (booksIds) => {
   return `select * from book_categories where book_id in (${valuesString})`;
 };
 
-const getBooksQuery = (filterModel) => {
+const getVolumsQuery = (filterModel) => {
   const query =
-    getBooksBaseQuery() +
+    getVolumsBaseQuery() +
     filterByBookName(filterModel.book_name) +
     filterByAuthorName(filterModel.author_name) +
-    filterByCategory(filterModel.category_id) +
+    filterByCategory(filterModel.categories) +
     filterByPublicationYear(filterModel.publication_year);
 
   return query;
 };
 //שאילתא השולפת את כל הספרים הקיימים במערכת
-const getBooksBaseQuery = () => {
+const getVolumsBaseQuery = () => {
   return 'select * from volumes v inner join books b on v.book_code=b.id where deleted=0 ';
 };
 
@@ -188,9 +190,11 @@ const filterByAuthorName = (authorName) => {
   return '';
 };
 
-const filterByCategory = (categoryId) => {
-  if (categoryId) {
-    return `and exists(select * from book_categories bc where bc.book_id = v.book_code and bc.category_id = ${categoryId}) `;
+const filterByCategory = (categories) => {
+  const valuesString = categories.join(', ');
+
+  if (categories.length) {
+    return `and exists(select * from book_categories bc where bc.book_id = v.book_code and bc.category_id in (${valuesString})) `;
   }
   return '';
 };
@@ -226,7 +230,11 @@ const getAddBookBorrowedAsBorrowedQuery = (userCode, volumeCode) => {
   return { query: q, values: values };
 };
 
+const changeAvailavility=(volume_id)=>{
+  const q=`UPDATE volumes set availability=1 where book_code='${volume_id}'`;
+  return sqlConnect(q);
+}
 
-const runSqlQuery = (query) => {};
+const runSqlQuery = (query) => { };
 
 module.exports = router;

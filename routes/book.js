@@ -13,7 +13,7 @@ const getbookId = (bookName) => {
 }
 
 //פונקציה להוספת כרך
-const addvolume=(book_id,owner_code)=>{
+const addvolume = (book_id, owner_code) => {
     const addVolumeQuery = `INSERT INTO volumes (book_code, owner_code) VALUES ('${book_id}', '${owner_code}')`;
     return sqlConnect(addVolumeQuery);
 }
@@ -25,7 +25,8 @@ router.post("/volumes", function (req, res) {
     const addVolumeQuery = `INSERT INTO volumes (book_code, owner_code) VALUES ('${idis.book_id}', '${idis.owner_code}')`;
     sqlConnect(addVolumeQuery)
         .then((result) => {
-            res.status(202);
+            console.log("28");
+            return res.status(202);
         })
         .catch((error) => {
             console.log(error);
@@ -47,9 +48,9 @@ router.post("/newBook", function (req, res) {
                     console.log("get book id");
                     console.log(id[0].id);
                     addBookCategories(id[0].id, selectedCategories)
-                    .then((console.log("succes category")));
-                    addvolume(id[0].id,newbook.owner_code)
-                    .then((console.log("addvolume succes")))
+                        .then((console.log("succes category")));
+                    addvolume(id[0].id, newbook.owner_code)
+                        .then((console.log("addvolume succes")))
                 })
             res.status(202);
         })
@@ -82,61 +83,73 @@ router.post("/book_categories", function (req, res) {
             res.status(500).send("An error occurred");
         })
 });
-
-router.post("/", function (req, res) {
-    const book = req.body;
-    const book_id = `SELECT book_id FROM books WHERE book_name = '${book.book_name}'`;
-    sqlConnect(book_id)
-        .then((result) => {
-            if (result.length > 0) {//הספר קיים-> נוסיף כרך 
-                console.log("the book exist");
-
-                const addVolumeQuery = `INSERT INTO volumes (book_id, owner_code) VALUES '${book_id}', '${book.owner_code}'`;
-                sqlConnect(addVolumeQuery)
-                    .then((result) => {
-                        return result.status(202);
-                    })
-            }
-            //הספר לר קיים->נוסיף ספר וגם כרך
-            const addBook = `INSERT INTO book ( book_name,author_name,publication_year) VALUES ('${book_name}', '${author_name}','${publication_year}' )`;
-            console.log(addBook);
-            sqlConnect(addBook)
-                .then((results) => {
-                    book_id = `SELECT book_id FROM books WHERE book_name = '${book.book_name}'`;
-
-                    const addToPass = `INSERT INTO password (username,password) VALUES ('${username}','${password}')`;
-                    sqlConnect(addToPass)
-                        .then((result) => {
-
-                            sqlConnect(book_id)
-                                .then((result) => {
-                                    if (result.length > 0) {//הספר קיים-> נוסיף כרך 
-                                        console.log("the book exist");
-
-                                        const addVolumeQuery = `INSERT INTO volumes (book_id, owner_code) VALUES '${book_id}', '${book.owner_code}'`;
-                                        sqlConnect(addVolumeQuery)
-                                            .then((result) => {
-                                                return result.status(202);
-                                            })
-                                    }
-
-                                })
-                                .catch((err) => {
-                                    console.error(err);
-                                    res.status(500).send("An error occurred");
-                                });
-                        })
-                        .catch((err) => {
-                            console.error(err);
-                            res.status(500).send("An error occurred");
-                        });
-                })
-                .catch((err) => {
-                    console.error(err);
-                    res.status(500).send("An error occurred");
-                });
+const returnBookVolum = (volume_id) => {
+    const query = `SELECT DISTINCT *
+    FROM (
+      SELECT *
+      FROM library_fswd7.books
+      JOIN library_fswd7.volumes ON books.id = volumes.book_code
+      WHERE volume_id = '${volume_id}' 
+    ) AS joined_result`;
+    sqlConnect(query)
+        .then((results) => {
+            console.log(results);
+            res.status(200).json(results)
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send("An error occurred");
         });
-});
+};
+
+// router.post("/", function (req, res) {
+//     const book = req.body;
+//     const book_id = `SELECT book_id FROM books WHERE book_name = '${book.book_name}'`;
+//     sqlConnect(book_id)
+//         .then((result) => {
+//             if (result.length > 0) {//הספר קיים-> נוסיף כרך 
+//                 console.log("the book exist");
+
+//                 const addVolumeQuery = `INSERT INTO volumes (book_id, owner_code) VALUES '${book_id}', '${book.owner_code}'`;
+//                 sqlConnect(addVolumeQuery)
+//                     .then((result) => {
+//                         console.log(result);
+//                         return result.status(202);
+//                     })
+//             }
+//             //הספר לר קיים->נוסיף ספר וגם כרך
+//             const addBook = `INSERT INTO book ( book_name,author_name,publication_year) VALUES ('${book_name}', '${author_name}','${publication_year}' )`;
+//             console.log(addBook);
+//             sqlConnect(addBook)
+//                 .then((results) => {
+//                     console.log(results);
+//                     book_id = `SELECT book_id FROM books WHERE book_name = '${book.book_name}'`;
+//                     sqlConnect(book_id)
+//                         .then((result) => {
+//                             if (result.length > 0) {//הספר קיים-> נוסיף כרך 
+//                                 console.log("the book exist");
+
+//                                 const addVolumeQuery = `INSERT INTO volumes (book_id, owner_code) VALUES '${book_id}', '${book.owner_code}'`;
+//                                 sqlConnect(addVolumeQuery)
+//                                     .then((result) => {
+//                                         console.log("138");
+//                                         console.log(result);
+//                                         return result.status(202);
+//                                     })
+//                             }
+
+//                         })
+//                         .catch((err) => {
+//                             console.error(err);
+//                             res.status(500).send("An error occurred");
+//                         });
+//                 })
+//                 .catch((err) => {
+//                     console.error(err);
+//                     res.status(500).send("An error occurred");
+//                 });
+//         });
+// });
 
 //בודק האם הספר קיים ומחזיר אותו אם כן
 router.get("/:book_name", function (req, res) {

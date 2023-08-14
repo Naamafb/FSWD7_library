@@ -16,10 +16,11 @@ function Register() {
   const [user, setUser] = useState({ username: "", password: "", first_name: "", last_name: "", email: "", phone: '', address: '', age: "" }); // מערך שמכיל את המשתנים של השם והסיסמה
 
   const navigate = useNavigate();
+  const [ageError, setAgeError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    // if(user.username!=""||user.password)
     const url = "http://localhost:3000/register";
     const requestOptions = {
       method: "POST",
@@ -38,7 +39,7 @@ function Register() {
         } else
           // if (response.status === 409) {
           console.log(response);
-          throw "Username or password already exists";
+        throw "Username or password already exists";
         //  }
       })
       .then((u) => {
@@ -53,6 +54,17 @@ function Register() {
       });
   };
 
+  const handleAgeChange = (e) => {
+    const ageValue = e.target.value;
+    if (ageValue < 16 || ageValue > 120) {
+      setAgeError("Age must be between 16 and 120");
+    } else {
+      setAgeError("");
+      setUser({ ...user, age: ageValue });
+
+    }
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <div>
@@ -61,30 +73,36 @@ function Register() {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
+              required
                 label="Username"
                 variant="outlined"
                 fullWidth
                 value={user.username}
                 onChange={(e) => setUser({ ...user, username: e.target.value })}
+                inputProps={{ minLength: 2, maxLength: 8 }}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
+              required
                 type="password"
                 label="Password"
                 variant="outlined"
                 fullWidth
                 value={user.password}
                 onChange={(e) => setUser({ ...user, password: e.target.value })}
+                inputProps={{ minLength: 4, maxLength: 8 }}
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
+              
                 label="First Name"
                 variant="outlined"
                 fullWidth
                 value={user.first_name}
                 onChange={(e) => setUser({ ...user, first_name: e.target.value })}
+                inputProps={{ minLength: 2, maxLength: 50 }}
               />
             </Grid>
             <Grid item xs={6}>
@@ -94,10 +112,12 @@ function Register() {
                 fullWidth
                 value={user.last_name}
                 onChange={(e) => setUser({ ...user, last_name: e.target.value })}
+                inputProps={{ minLength: 2, maxLength: 50 }}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
+              required
                 type="email"
                 label="Email"
                 variant="outlined"
@@ -108,15 +128,19 @@ function Register() {
             </Grid>
             <Grid item xs={12}>
               <TextField
+              required
+                type="tel"
                 label="Phone"
                 variant="outlined"
                 fullWidth
                 value={user.phone}
                 onChange={(e) => setUser({ ...user, phone: e.target.value })}
+                inputProps={{ length: 10 }}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
+                type="text"
                 label="Address"
                 variant="outlined"
                 fullWidth
@@ -131,7 +155,9 @@ function Register() {
                 variant="outlined"
                 fullWidth
                 value={user.age}
-                onChange={(e) => setUser({ ...user, age: e.target.value })}
+                onChange={handleAgeChange}
+                error={ageError !== ""}
+                helperText={ageError}
               />
             </Grid>
           </Grid>
