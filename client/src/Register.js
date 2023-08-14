@@ -13,14 +13,14 @@ import Grid from '@mui/material/Grid';
 
 function Register() {
 
-  const [user, setUser] = useState({ username: "", password: "", first_name: "", last_name: "", email: "", phone: '', address: '', age: "" }); // מערך שמכיל את המשתנים של השם והסיסמה
+  const [user, setUser] = useState({ username: "", password: "", first_name: "", last_name: "", email: "", phone: '', address: '', age: "" ,id:""}); // מערך שמכיל את המשתנים של השם והסיסמה
 
   const navigate = useNavigate();
   const [ageError, setAgeError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if(user.username!=""||user.password)
+    if(inputCheck()){
     const url = "http://localhost:3000/register";
     const requestOptions = {
       method: "POST",
@@ -43,26 +43,51 @@ function Register() {
         //  }
       })
       .then((u) => {
-        console.log(u);
-        localStorage.setItem("currentUser", JSON.stringify(user));
+        // console.log(u);
+        // setUser({ ...user, id: u });
+        // localStorage.setItem("currentUser", JSON.stringify(user));
         console.log("reg ok ");
-        navigate(`/users/${user.username}/info`);
+        // navigate(`/users/${user.username}/info`);
+        navigate('/login');
       })
       .catch((error) => {
         console.error(error);
         alert(error);
       });
+    }else{
+      alert("try again, on of the fileds is not correct")
+    }
   };
 
+  const inputCheck=()=>{
+    if(user.username===""){
+      alert("the username is empty, try again");
+      return false;
+    }
+    console.log(user.password.length);
+    if(user.password.length<4||user.password.length>8){
+      return false;
+    }
+    if(user.age< 16 || user.age > 120){
+      return false;
+    }
+    console.log(user.phone.length);
+    if(user.phone.length!=10){
+      alert("users phone most be 10 numbers ")
+      return false;
+    }
+    return true;
+  }
   const handleAgeChange = (e) => {
     const ageValue = e.target.value;
     if (ageValue < 16 || ageValue > 120) {
       setAgeError("Age must be between 16 and 120");
     } else {
       setAgeError("");
-      setUser({ ...user, age: ageValue });
 
     }
+    setUser({ ...user, age: ageValue });
+
   };
 
   return (
@@ -96,7 +121,7 @@ function Register() {
             </Grid>
             <Grid item xs={6}>
               <TextField
-              
+              type="text"
                 label="First Name"
                 variant="outlined"
                 fullWidth
@@ -107,6 +132,7 @@ function Register() {
             </Grid>
             <Grid item xs={6}>
               <TextField
+                            type="text"
                 label="Last Name"
                 variant="outlined"
                 fullWidth
