@@ -45,7 +45,7 @@ function Login({ setUsername }) {
         localStorage.setItem("currentUser", JSON.stringify(user));
         setUsername(name);
         console.log(user);
-        navigate(`/users/${name}/info`);
+        navigate(`/users/${name}/home`);
       })
       .catch((error) => {
         console.error(error);

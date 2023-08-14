@@ -5,7 +5,7 @@ import Login from "./Login";
 import ProtectedRoute from "./ProtectedRoute";
 import Navbar from "./Navbar";
 import Info from "./libraryPages/info";
-import ContactTheManager from "./libraryPages/contactTheManager";
+import Home from "./libraryPages/home";
 import FindBook from "./libraryPages/findBook";
 import MyBooks from "./libraryPages/myBooks";
 import OrderBasket from "./libraryPages/orderBasket";
@@ -44,6 +44,14 @@ function App() {
               </ProtectedRoute>
             }
           >
+            <Route
+              path={`/users/${username}/home`}
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path={`/users/${username}/info`}
               element={
