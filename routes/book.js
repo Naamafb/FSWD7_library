@@ -26,7 +26,7 @@ router.post("/volumes", function (req, res) {
     sqlConnect(addVolumeQuery)
         .then((result) => {
             console.log("28");
-            return res.status(202);
+            return res.status(202).json(result);
         })
         .catch((error) => {
             console.log(error);
@@ -52,7 +52,7 @@ router.post("/newBook", function (req, res) {
                     addvolume(id[0].id, newbook.owner_code)
                         .then((console.log("addvolume succes")))
                 })
-            res.status(202);
+            res.status(202).json(result);
         })
         .catch((error) => {
             console.log(error);
