@@ -53,7 +53,7 @@ function AddNewBook() {
         console.log("bdika");
         console.log(response.status);
         if (response.status === 202) {
-          console.log(response);
+          // console.log(response);
           return response.json();
         } else
           // if (response.status === 409) {

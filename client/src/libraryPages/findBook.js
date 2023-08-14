@@ -25,35 +25,35 @@ function FindBook() {
     const [selectedCategories, setSelectedCategories] = useState([]);
 
     const [volums, setV] = useState([]);
-    const [showFilteredBooks,setBooks]=useState(false);
+    const [showFilteredBooks, setBooks] = useState(false);
 
     useEffect(() => {
         console.log("useeffect");
 
-            const url = "http://localhost:3000/category";
-            const requestOptions = {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
+        const url = "http://localhost:3000/category";
+        const requestOptions = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        };
+        fetch(url, requestOptions)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
                 }
-            };
-            fetch(url, requestOptions)
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("Network response was not ok");
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    // התוצאה כאן היא מערך של הקטגוריות
-                    console.log(data);
-                    localStorage.setItem('myCategoriesList', JSON.stringify(data));
-                    setCategories(data);
-                })
-                .catch((error) => {
-                    console.error("Error fetching categories:", error);
-                    alert("Error fetching categories");
-                });
+                return response.json();
+            })
+            .then((data) => {
+                // התוצאה כאן היא מערך של הקטגוריות
+                console.log(data);
+                localStorage.setItem('myCategoriesList', JSON.stringify(data));
+                setCategories(data);
+            })
+            .catch((error) => {
+                console.error("Error fetching categories:", error);
+                alert("Error fetching categories");
+            });
         // }
     }, []);
 
@@ -61,7 +61,7 @@ function FindBook() {
         event.preventDefault();
         console.log("handleSearch");
         console.log(bookName);
-        const filterModel = { book_name: bookName, publication_year: publicationYear, categories: selectedCategories,author_name: authorName}
+        const filterModel = { book_name: bookName, publication_year: publicationYear, categories: selectedCategories, author_name: authorName }
         const url = "http://localhost:3000/findbook/filter";
         const requestOptions = {
             method: "POST",
@@ -84,12 +84,12 @@ function FindBook() {
             })
             .then((u) => {
                 console.log(u);
-                if(u.length>0){
-                console.log(volums);
-                setV(u);
-                console.log(volums);
-                setBooks(true);
-                localStorage.setItem('myFilterBooksList', JSON.stringify(u));
+                if (u.length > 0) {
+                    console.log(volums);
+                    setV(u);
+                    console.log(volums);
+                    setBooks(true);
+                    localStorage.setItem('myFilterBooksList', JSON.stringify(u));
                 }
                 console.log("ok search");
             })
@@ -186,7 +186,7 @@ function FindBook() {
             </form>
             <div>
                 {showFilteredBooks ?
-                    (<BookComponent  />)
+                    (<BookComponent />)
                     : (<div> no results
                     </div>)
                 }
