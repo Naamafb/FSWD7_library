@@ -9,12 +9,7 @@ function Messages(){
     const [findMessages ,setFindMessages] = useState(false);
     
     useEffect(()=>{
-    debugger;
-    const myMessagesFromLocal = JSON.parse(localStorage.getItem('myMessagesList'));
-    if (Array.isArray(myMessagesFromLocal) && myMessagesFromLocal.length>0) {
-        setMyMessages(myMessagesFromLocal);
-        setFindMessages(true);
-    } else {
+    //debugger;
       const url = `http://localhost:3000/messages/users/${user.id}`;
 
       const requestMessages = {
@@ -32,10 +27,9 @@ function Messages(){
           setMyMessages(sortedMessages);
           if(sortedMessages.length>0)
            setFindMessages(true);
-          localStorage.setItem('myMessagesList', JSON.stringify(sortedMessages));
         })
         .catch(() => setFindMessages(false));
-    }
+    
     console.log(setFindMessages)
     },[])
 

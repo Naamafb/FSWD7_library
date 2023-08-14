@@ -15,12 +15,7 @@ function MyBooks(){
 
 
     useEffect(()=>{
-        // debugger
-    const myBooksFromLocal = JSON.parse(localStorage.getItem('myBooksList'));
-    if (Array.isArray(myBooksFromLocal) && myBooksFromLocal.length>0) {
-      setMyBooks(myBooksFromLocal);
-      setFindMyBooks(true);
-    } else {
+    // debugger
       const url = `http://localhost:3000/myBooks/users/${user.id}`;
 
       const requestMyBooks = {
@@ -42,10 +37,9 @@ function MyBooks(){
           setMyBooks(filteredBooks);
           if(filteredBooks.length>0)
            setFindMyBooks(true);
-          localStorage.setItem('myBooksList', JSON.stringify(filteredBooks));
         })
         .catch(() => setFindMyBooks(false));
-    }
+    
     console.log(findMyBooks)
     },[])
 
@@ -81,7 +75,6 @@ function MyBooks(){
                 });
                   console.log("updated list")
                   console.log(updatedMyBooksList)
-                localStorage.setItem('myBooksList', JSON.stringify(updatedMyBooksList));
                 setMyBooks(updatedMyBooksList);
                 if (updatedMyBooksList.length === 0) {
                 setFindMyBooks(false);
