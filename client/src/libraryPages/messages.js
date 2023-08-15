@@ -3,15 +3,12 @@ import styles from "./Info.module.css";
 import React from "react";
 
 function Messages(){
-
     const user = JSON.parse(localStorage.getItem("currentUser"));
     const [myMessages,setMyMessages]= useState([]);
     const [findMessages ,setFindMessages] = useState(false);
     
     useEffect(()=>{
-    //debugger;
       const url = `http://localhost:3000/messages/users/${user.id}`;
-
       const requestMessages = {
         method: 'GET',
         headers: {

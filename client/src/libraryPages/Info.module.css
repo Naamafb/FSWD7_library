@@ -1,4 +1,47 @@
-.user-card {
+/* .user-card {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+
+  h1 {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  table {
+    width: 100%;
+    margin-bottom: 16px;
+
+    td {
+      padding: 8px 0;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  }
+
+  .edit-save-icons {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      margin-left: 8px;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      color: #1976d2;
+    }
+  }
+} */
+
+ .user-card {
     background-color: #f2f2f2;
     padding: 20px;
     border-radius: 5px;
@@ -29,4 +72,4 @@
   td:first-child {
     font-weight: bold;
     width: 30%;
-  }
+  } 

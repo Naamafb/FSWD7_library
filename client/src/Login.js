@@ -56,7 +56,7 @@ function Login({ setUsername }) {
   return (
     <section className={styles.section}>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <h5>LOGIN</h5>
+        <h5>Library login</h5>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField

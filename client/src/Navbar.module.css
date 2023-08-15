@@ -2,17 +2,47 @@
   display: flex;
   justify-content: center;
   margin-bottom: 30px;
-  background-color: rgba(0, 65, 205, 0.166);
+  background-color: rgba(30, 34, 44, 0.166);
 }
-  
+
 .link {
   text-decoration: none;
   font-size: 20px;
-  color: mediumblue;
+  color: rgb(7, 7, 7);
   padding: 20px 30px;
 }
   
 .link:hover {
-  background-color: rgba(0, 0, 205, 0.103);
+  background-color: rgba(14, 14, 32, 0.103);
 }
   
+/* Navbar */
+/* .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 65, 205, 0.166);
+  padding: 10px 20px;
+}
+
+.link-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.link {
+  text-decoration: none;
+  font-size: 16px;
+  color: mediumblue;
+  padding: 8px;
+  transition: background-color 0.3s;
+}
+
+.link:hover {
+  background-color: rgba(0, 0, 205, 0.103);
+}
+
+.logoutButton {
+  margin-left: auto;
+} */

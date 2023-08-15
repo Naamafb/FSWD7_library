@@ -12,9 +12,6 @@ function OrderBasket(){
     const [FindMyWishList,setFindMyWishList]=useState(false);
     const [FindMyReadingList,setFindMyReadingList]=useState(false);
     
-    
-
-    
     const updateRequest = (request_id,whatTodo) =>{
       if(whatTodo=== "returnBook"){
         console.log("return book");
@@ -57,7 +54,6 @@ function OrderBasket(){
   }
     //החזרה של  ספר
     const returnBook = async (request_id,volume_id) => {
-      debugger;
         const url = `http://localhost:3000/orderBasket/myReadingList/returnBook/users/${user.id}`;
 
         const dateNow=new Date().toISOString();
@@ -81,7 +77,6 @@ function OrderBasket(){
     }
 
     useEffect(()=>{
-    debugger
     // ספרים שאני נמצא ברשימת המתנה על מנת להשאיל אותם
       const url = `http://localhost:3000/orderBasket/wishList/users/${user.id}`;
 

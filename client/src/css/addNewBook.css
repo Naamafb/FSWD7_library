@@ -80,3 +80,21 @@
   .btn-link:hover{
     background-color: #a0a0a096;
   }
+
+
+/* סגנון הרספונסיביות */
+@media screen and (max-width: 600px) {
+  .responsiveForm {
+      /* הגדל פונטים במסכים קטנים */
+      font-size: 14px;
+  }
+}
+
+/* ניתן להוסיף שגרות נוספות לכמה רמות של רזולוציה */
+@media screen and (max-width: 400px) {
+  .responsiveForm {
+      /* שנה את הגודל והרווחים למסכים קטנים יותר */
+      font-size: 12px;
+      margin: 10px;
+  }
+}

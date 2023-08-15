@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import styles from "./Info.module.css";
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
+import Button from '@mui/material/Button';
 
 function Info() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("currentUser")));
@@ -55,71 +58,150 @@ function Info() {
 
   return (
     <div>
-      {isEdit === 0 ? (
-        <div className={styles["user-card"]}>
-          <h1>{user.first_name} {user.last_name}</h1>
-          <table>
-            <tbody>
-              <tr>
-                <td>Username</td>
-                <td>{user.username}</td>
-              </tr>
-              <tr>
-                <td>Email</td>
-                <td>{user.email}</td>
-              </tr>
-              <tr>
-                <td>Phone</td>
-                <td>{user.phone}</td>
-              </tr>
-              <tr>
-                <td>Address</td>
-                <td>{user.address}</td>
-              </tr>
-              <tr>
-                <td>Age</td>
-                <td>{user.age}</td>
-              </tr>
-            </tbody>
-          </table>
-          <button onClick={() => setIsEdit(1)}>Edit</button>
-        </div>
-      ) : (
-        <div className={styles["user-card"]}>
-        <table>
+  {isEdit === 0 ? (
+    <div className={styles["user-card"]}>
+      <h1>{user.first_name} {user.last_name}</h1>
+      <table>
+        <tbody>
           <tr>
-          <td>Fisrt name</td>
-          <td><input id="updatedFirstName" defaultValue={user.first_name} /></td>
+            <td>Username</td>
+            <td>{user.username}</td>
           </tr>
           <tr>
-          <td>Last name</td>
-          <td><input id="updatedLastName" defaultValue={user.last_name} /></td>
+            <td>Email</td>
+            <td>{user.email}</td>
           </tr>
           <tr>
-          <td>Username</td>
-          <td><input id="updatedUserName" defaultValue={user.username} /></td>
+            <td>Phone</td>
+            <td>{user.phone}</td>
           </tr>
           <tr>
-          <td>Email</td>
-          <td><input id="updatedEmail" defaultValue={user.email} /></td>
+            <td>Address</td>
+            <td>{user.address}</td>
           </tr>
           <tr>
-          <td>Phone</td>
-          <td><input id="updatedPhone" defaultValue={user.phone} /></td>
+            <td>Age</td>
+            <td>{user.age}</td>
           </tr>
-          <tr>
-          <td>Address</td>
-          <td><input id="updatedAddress" defaultValue={user.address} /></td>
-          </tr>
-          <tr>
-          <td>Age</td>
-          <td><input id="updatedAge" defaultValue={user.age} /></td>
-          </tr>
-        </table>
-        <button onClick={editInfo}>Save</button>
-        </div>
-      )}
+        </tbody>
+      </table>
+      <div className="edit-save-icons">
+        <Button variant="outlined" color="primary" onClick={() => setIsEdit(1)}>
+          <EditIcon /> Edit
+        </Button>
+      </div>
     </div>
+  ) : (
+    <div className={styles["user-card"]}>
+      <table>
+        <tbody>
+          <tr>
+            <td>First name</td>
+            <td><input id="updatedFirstName" defaultValue={user.first_name} /></td>
+          </tr>
+          <tr>
+            <td>Last name</td>
+            <td><input id="updatedLastName" defaultValue={user.last_name} /></td>
+          </tr>
+          <tr>
+            <td>Username</td>
+            <td><input id="updatedUserName" defaultValue={user.username} /></td>
+          </tr>
+          <tr>
+            <td>Email</td>
+            <td><input id="updatedEmail" defaultValue={user.email} /></td>
+          </tr>
+          <tr>
+            <td>Phone</td>
+            <td><input id="updatedPhone" defaultValue={user.phone} /></td>
+          </tr>
+          <tr>
+            <td>Address</td>
+            <td><input id="updatedAddress" defaultValue={user.address} /></td>
+          </tr>
+          <tr>
+            <td>Age</td>
+            <td><input id="updatedAge" defaultValue={user.age} /></td>
+          </tr>
+        </tbody>
+      </table>
+      <div className="edit-save-icons">
+        <Button variant="contained" color="primary" onClick={editInfo}>
+          <SaveIcon /> Save
+        </Button>
+      </div>
+    </div>
+  )}
+</div>
+
+    // <div>
+    //   {isEdit === 0 ? (
+    //     <div className={styles["user-card"]}>
+    //       <h1>{user.first_name} {user.last_name}</h1>
+    //       <table>
+    //         <tbody>
+    //           <tr>
+    //             <td>Username</td>
+    //             <td>{user.username}</td>
+    //           </tr>
+    //           <tr>
+    //             <td>Email</td>
+    //             <td>{user.email}</td>
+    //           </tr>
+    //           <tr>
+    //             <td>Phone</td>
+    //             <td>{user.phone}</td>
+    //           </tr>
+    //           <tr>
+    //             <td>Address</td>
+    //             <td>{user.address}</td>
+    //           </tr>
+    //           <tr>
+    //             <td>Age</td>
+    //             <td>{user.age}</td>
+    //           </tr>
+    //         </tbody>
+    //       </table>
+    //       <EditIcon onClick={() => setIsEdit(1)}></EditIcon>
+    //       {/* <button onClick={() => setIsEdit(1)}>Edit</button> */}
+    //     </div>
+    //   ) : (
+    //     <div className={styles["user-card"]}>
+    //     <table>
+    //       <tr>
+    //       <td>Fisrt name</td>
+    //       <td><input id="updatedFirstName" defaultValue={user.first_name} /></td>
+    //       </tr>
+    //       <tr>
+    //       <td>Last name</td>
+    //       <td><input id="updatedLastName" defaultValue={user.last_name} /></td>
+    //       </tr>
+    //       <tr>
+    //       <td>Username</td>
+    //       <td><input id="updatedUserName" defaultValue={user.username} /></td>
+    //       </tr>
+    //       <tr>
+    //       <td>Email</td>
+    //       <td><input id="updatedEmail" defaultValue={user.email} /></td>
+    //       </tr>
+    //       <tr>
+    //       <td>Phone</td>
+    //       <td><input id="updatedPhone" defaultValue={user.phone} /></td>
+    //       </tr>
+    //       <tr>
+    //       <td>Address</td>
+    //       <td><input id="updatedAddress" defaultValue={user.address} /></td>
+    //       </tr>
+    //       <tr>
+    //       <td>Age</td>
+    //       <td><input id="updatedAge" defaultValue={user.age} /></td>
+    //       </tr>
+    //     </table>
+    //     <SaveIcon onClick={editInfo}></SaveIcon>
+    //     {/* <button onClick={editInfo}>Save</button> */}
+    //     </div>
+    //   )}
+    // </div>
   );
 }
 

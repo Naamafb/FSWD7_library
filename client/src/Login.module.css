@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
 
 .section {
-    background-image: url("./background_login.jpg");
+    background-image: url("./GettyImages.webp");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -17,15 +17,15 @@
     flex-direction: column;
     align-items: center;
     border-radius: 5px;
-    padding: 60px 220px;
-    background-color: #fff;
+    padding: 30px 80px;
+    background-color: #e4c63bed;
   }
   
   .form h5 {
     font-size: 32px;
     margin-bottom: 40px;
     font-weight: bold;
-    color: mediumblue;
+    color: #9e082e;
     margin-top: 20px;
   }
   
@@ -59,8 +59,9 @@
     margin-top: 35px;
     height: 50px;
     width: 200px;
-    background-color: mediumblue;
+    background-color: rgba(205, 195, 0, 0.826);
     font-size: 18px;
+    
   }
 
   .btn-link{
