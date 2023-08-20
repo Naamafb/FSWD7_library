@@ -77,7 +77,7 @@ function FindBook() {
                     return response.json();
                 } else
                     // if (response.status === 409) {
-                    throw "";
+                    throw "problem with search book with filter";
                 //  }
             })
             .then((u) => {
