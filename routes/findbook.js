@@ -2,6 +2,50 @@ const express = require('express');
 const router = express.Router();
 const { sqlConnect } = require('./connectTodb.js');
 
+router.post('/filterBooks', function (req, res) {
+  const filterModel = req.body;
+  console.log(filterModel);
+ 
+  getBooks(filterModel)
+  .then((books) => {
+    if (books.length === 0) {
+      return res.status(200).json([]);
+    }
+    return res.status(200).json(books);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('An error occurred');
+  });
+});
+
+const getBooks = (filterModel) => {
+  const q = getBooksQuery(filterModel);
+  return sqlConnect(q);
+};
+
+const getBooksQuery = (filterModel) => {
+  const query =
+    getBooksBaseQuery() +
+    filterByBookName(filterModel.book_name) +
+    filterByAuthorName(filterModel.author_name) +
+    filterByCategories(filterModel.categories) + //בעיה עם שליפה של כרכים
+    filterByPublicationYear(filterModel.publication_year);
+
+  return query;
+};
+const getBooksBaseQuery = () => {
+  return 'select * from books b on where deleted=0 ';
+};
+const filterByCategories = (categories) => {
+  const valuesString = categories.join(', ');
+
+  if (categories.length) {
+    return `and exists(select * from book_categories bc where bc.book_id = b.id and bc.category_id in (${valuesString})) `;
+  }
+  return '';
+};
+
 router.post('/filter', function (req, res) {
   const filterModel = req.body;
   console.log(filterModel);
