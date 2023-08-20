@@ -5,18 +5,18 @@ const { sqlConnect } = require('./connectTodb.js');
 router.post('/filterBooks', function (req, res) {
   const filterModel = req.body;
   console.log(filterModel);
- 
+
   getBooks(filterModel)
-  .then((books) => {
-    if (books.length === 0) {
-      return res.status(200).json([]);
-    }
-    return res.status(200).json(books);
-  })
-  .catch((err) => {
-    console.error(err);
-    res.status(500).send('An error occurred');
-  });
+    .then((books) => {
+      if (books.length === 0) {
+        return res.status(200).json([]);
+      }
+      return res.status(200).json(books);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('An error occurred');
+    });
 });
 
 const getBooks = (filterModel) => {
@@ -44,6 +44,38 @@ const filterByCategories = (categories) => {
     return `and exists(select * from book_categories bc where bc.book_id = b.id and bc.category_id in (${valuesString})) `;
   }
   return '';
+};
+
+router.get('/bookVolume/:book_id', function (req, res) {
+  const book_id = req.params.book_id;
+
+  getBookVolums(book_id)
+    .then((volums) => {
+      if (volums.length === 0) {
+        return res.status(200).json([]);
+      }
+
+      getUsers(volums)
+        .then((users) => {
+          //לחבר בין כרכים למשתמשים
+          res.status(200).json(result);
+        })
+        .catch((err) => {
+          console.error(err);
+          res.status(500).send('An error occurred');
+        });
+
+
+      // res.status(200).json(books);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('An error occurred');
+    });
+});
+const getBookVolums = (book_id) => {
+  const q = `select * from volumes v where v.book_code='${book_id}' `
+  return sqlConnect(q);
 };
 
 router.post('/filter', function (req, res) {
