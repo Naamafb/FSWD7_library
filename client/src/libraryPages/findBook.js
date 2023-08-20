@@ -192,7 +192,8 @@ function FindBook() {
             </form>
             <div>
                 {showFilteredBooks ?
-                    (<BookComponent booksVolums={volums}/>)
+                    // (<BookComponent booksVolums={volums}/>)
+                    (<BookComponent booksVolums={volums} updateAfterChange={handleSearch}/>)
                     : (<div> no results </div>)
                 }
             </div>
