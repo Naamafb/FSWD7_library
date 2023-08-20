@@ -18,7 +18,8 @@ const BookList = ({ books, onBookSelect }) => {
     );
 };
 
-const BookComponent = (booksVolums) => {
+// const BookComponent = (booksVolums) => {
+const BookComponent = (booksVolums,updateAfterChange) => {
 
     console.log(booksVolums);
     const [selectedBook, setSelectedBook] = useState(null);
@@ -29,9 +30,6 @@ const BookComponent = (booksVolums) => {
         console.log('booksVolums');
         console.log(booksVolums.booksVolums);
         setBooksVolums(booksVolums.booksVolums)
-        // const myFilterBooksList = JSON.parse(localStorage.getItem('myFilterBooksList'));
-        // console.log(myFilterBooksList);
-        // setBooksVolums(myFilterBooksList);
     }, []);
 
     const handleBookSelect = (book) => {
@@ -63,6 +61,7 @@ const BookComponent = (booksVolums) => {
                 })
                 .then((u) => {
                     console.log(u);
+                    () => updateAfterChange();
                 })
                 .catch((error) => {
                     console.error(error);
@@ -98,6 +97,7 @@ const BookComponent = (booksVolums) => {
                 })
                 .then((u) => {
                     console.log(u);
+                    () => updateAfterChange();
                 })
                 .catch((error) => {
                     console.error(error);
