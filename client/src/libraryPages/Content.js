@@ -56,7 +56,7 @@ const BookComponent = (booksVolums,updateAfterChange) => {
                         return response.json();
                     } else
                         // if (response.status === 409) {
-                        throw "";
+                    throw "problem with borrow book";
                     //  }
                 })
                 .then((u) => {
@@ -92,7 +92,7 @@ const BookComponent = (booksVolums,updateAfterChange) => {
                         return response.json();
                     } else
                         // if (response.status === 409) {
-                        throw "";
+                    throw "problem with add Book To Wish list";
                     //  }
                 })
                 .then((u) => {
