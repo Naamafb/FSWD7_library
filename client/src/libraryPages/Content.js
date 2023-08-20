@@ -11,6 +11,8 @@ const BookList = ({ books, onBookSelect }) => {
                     <ListItemText
                         primary={book.bookName}
                         secondary={`${book.volumes[0].author_name} - ${book.categories.join(', ')}`}
+                        // secondary={`${book.author_name} - ${book.categories.join(', ')}`}
+
                     />
                 </ListItem>
             ))}
@@ -32,8 +34,39 @@ const BookComponent = (booksVolums,updateAfterChange) => {
         setBooksVolums(booksVolums.booksVolums)
     }, []);
 
-    const handleBookSelect = (book) => {
+   const handleBookSelect = (book) => {
         setSelectedBook(book);
+        // if (book) {
+        //     const url = `http://localhost:3000/findbook//bookVolume/${book.id}`;
+        //     const requestOptions = {
+        //         method: "GET",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //         },
+        //     };
+        //     fetch(url, requestOptions)
+        //         .then((response) => {
+        //             console.log(response);
+        //             if (response.status === 200) {
+        //                 console.log("status 200");
+        //                 return response.json();
+        //             } else
+        //                 // if (response.status === 409) {
+        //                 throw "";
+        //             //  }
+        //         })
+        //         .then((u) => {
+        //             console.log(u);
+        //             //to do set volums
+        //         })
+        //         .catch((error) => {
+        //             console.error(error);
+        //             alert(error);
+        //         });
+        // }
+        // else {
+        //     alert("volume_id or owner_code is undefind");
+        // }
     };
 
     //myReadingList
