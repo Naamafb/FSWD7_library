@@ -114,9 +114,6 @@ function FindBook() {
         }
 
     };
-    const bdika=()=>{
-        alert("its okkkk")
-    }
 
     return (
         <div className="App">
@@ -190,11 +187,7 @@ function FindBook() {
                     </Grid>
                 </Grid>
                 <br></br>
-                <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                >
+                <Button type="submit" variant="contained" color="primary">
                     Search
                 </Button>
             </form>
@@ -204,8 +197,7 @@ function FindBook() {
             <Divider />
 
                 {showFilteredBooks ?
-                    // (<BookComponent booksVolums={volums}/>)
-                    (<BookComponent booksVolums={volums} updateAfterChange={bdika}/>
+                    (<BookComponent booksVolums={volums}/>
                     )
                     : (<div> no results </div>)
                 }

@@ -23,19 +23,13 @@ const BookList = ({ books, onBookSelect }) => {
     );
 };
 
-// const BookComponent = (booksVolums) => {
-const BookComponent = (books, updateAfterChange) => {
+const BookComponent = (books) => {
 
     console.log(books);
     const [selectedBook, setSelectedBook] = useState("");
     const [books_volums, setBooksVolums] = useState("");
     const user = JSON.parse(localStorage.getItem("currentUser"));
 
-    // useEffect(() => {
-    //     console.log('booksVolums');
-    //     console.log(books.booksVolums);
-    //     setSelectedBook(books.booksVolums)
-    // }, []);
     useEffect(() => {
         console.log(books_volums);
         console.log(selectedBook);
@@ -83,7 +77,6 @@ const BookComponent = (books, updateAfterChange) => {
         }
     };
 
-    //myReadingList
     const borrowBook = (volume_id, owner_code) => {
         console.log(volume_id, owner_code);
         if (volume_id && owner_code) {
@@ -101,10 +94,9 @@ const BookComponent = (books, updateAfterChange) => {
                     if (response.status === 200) {
                         console.log("status 200");
                         return response.json();
-                    } else
-                        // if (response.status === 409) {
+                    } else{
                         throw "problem with borrow book";
-                    //  }
+                    }
                 })
                 .then((u) => {
                     console.log(u);

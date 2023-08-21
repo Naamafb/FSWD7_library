@@ -16,7 +16,6 @@ app.use(bodyParser.json());
 
 const loginRoutes = require('./routes/login');
 const regRoutes = require('./routes/register');
-const userRoutes = require('./routes/user');
 const infoRoutes = require('./routes/info');
 const bookRoutes = require('./routes/book');
 const myBooksRoutes = require('./routes/myBooks');
@@ -30,7 +29,6 @@ const messagesRoutes = require('./routes/messages');
 app.use('/info',infoRoutes);
 app.use('/register', regRoutes);
 app.use('/login', loginRoutes);
-app.use('/users', userRoutes);
 app.use('/book', bookRoutes);
 app.use('/myBooks', myBooksRoutes);
 app.use('/orderBasket', orderBasketRoutes);
