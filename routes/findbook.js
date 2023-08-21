@@ -11,7 +11,28 @@ router.post('/filterBooks', function (req, res) {
       if (books.length === 0) {
         return res.status(200).json([]);
       }
-      return res.status(200).json(books);
+      console.log("books");
+      console.log(books);
+      getBooksCategories(books)
+        .then((booksCategories) => {
+          console.log("booksCategories");
+          console.log(booksCategories);
+          getCategories(booksCategories)
+            .then((categories) => {
+              console.log("categories");
+              console.log(categories);
+              const result = generateReaultBookList(books, booksCategories, categories);
+              res.status(200).json(result);
+            })
+            .catch((err) => {
+              console.error(err);
+              res.status(500).send('An error occurred');
+            });
+        })
+        .catch((err) => {
+          console.error(err);
+          res.status(500).send('An error occurred');
+        });
     })
     .catch((err) => {
       console.error(err);
@@ -34,17 +55,20 @@ const getBooksQuery = (filterModel) => {
 
   return query;
 };
+
 const getBooksBaseQuery = () => {
-  return 'select * from books b on where deleted=0 ';
+  return 'select * from books b where b.id > 0 ';
 };
+
 const filterByCategories = (categories) => {
-  const valuesString = categories.join(', ');
 
   if (categories.length) {
+    const valuesString = categories.join(', ');
     return `and exists(select * from book_categories bc where bc.book_id = b.id and bc.category_id in (${valuesString})) `;
   }
   return '';
 };
+
 
 router.get('/bookVolume/:book_id', function (req, res) {
   const book_id = req.params.book_id;
@@ -58,72 +82,25 @@ router.get('/bookVolume/:book_id', function (req, res) {
       getUsers(volums)
         .then((users) => {
           //לחבר בין כרכים למשתמשים
+          const result = generateReaultVolumeUserList(volums, users);
+          console.log(result);
           res.status(200).json(result);
         })
         .catch((err) => {
           console.error(err);
           res.status(500).send('An error occurred');
         });
-
-
-      // res.status(200).json(books);
     })
     .catch((err) => {
       console.error(err);
       res.status(500).send('An error occurred');
     });
 });
+
 const getBookVolums = (book_id) => {
   const q = `select * from volumes v where v.book_code='${book_id}' `
   return sqlConnect(q);
 };
-
-router.post('/filter', function (req, res) {
-  const filterModel = req.body;
-  console.log(filterModel);
-  getVolums(filterModel)
-    .then((volums) => {
-      if (volums.length === 0) {
-        return res.status(200).json([]);
-      }
-      getBooksCategories(volums)
-        .then((booksCategories) => {
-          getCategories(booksCategories)
-            .then((categories) => {
-              getUsers(volums)
-                .then((users) => {
-                  const result =
-
-                    generateReaultList(
-                      volums,
-                      booksCategories,
-                      categories,
-                      users
-
-                    );
-                  res.status(200).json(result);
-                })
-                .catch((err) => {
-                  console.error(err);
-                  res.status(500).send('An error occurred');
-                });
-            })
-            .catch((err) => {
-              console.error(err);
-              res.status(500).send('An error occurred');
-            });
-        })
-        .catch((err) => {
-          console.error(err);
-          res.status(500).send('An error occurred');
-        });
-      // res.status(200).json(books);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('An error occurred');
-    });
-});
 
 router.post('/borrowBook', function (req, res) {
   const data = req.body;
@@ -156,35 +133,39 @@ router.post('/addBookToWishlist', function (req, res) {
     });
 });
 
-const getVolums = (filterModel) => {
-  const q = getVolumsQuery(filterModel);
-  return sqlConnect(q);
-};
+const generateReaultVolumeUserList = (volums, users) => {
+  const resultVolumeUserList = [];
 
-const generateReaultList = (volums, booksCategories, categories, users) => {
-  var result = {};
+  for (const volume of volums) {
+    const correspondingUser = users.find(user => user.id === volume.owner_code);
 
-  for (const volum of volums) {
-    const bookName = volum.book_name;
-
-    if (!result[bookName]) {
-      const categoriesList = getBookCategoriesList(
-        booksCategories,
-        categories,
-        volum.book_code
-      );
-      result[bookName] = {
-        bookName: bookName,
-        volumes: [],
-        categories: categoriesList,
-        // owner: owner,
+    if (correspondingUser) {
+      const volumeWithUser = {
+        ...volume,
+        owner: correspondingUser
       };
+
+      resultVolumeUserList.push(volumeWithUser);
     }
-    const owner = users.filter((u) => u.id == volum.owner_code);
-    volum.owner = owner
-    result[bookName].volumes.push(volum);
   }
-  return Object.values(result);
+
+  return resultVolumeUserList;
+}
+
+const generateReaultBookList = (books, booksCategories, categories) => {
+  var result = [];
+
+  for (const book of books) {
+
+    const categoriesList = getBookCategoriesList(
+      booksCategories,
+      categories,
+      book.id
+    );
+    result.push({ book, categoriesList })
+  }
+  console.log(result[0]);
+  return result
 };
 
 const getBookCategoriesList = (booksCategories, categories, bookId) => {
@@ -219,7 +200,8 @@ const getCategoriesQuery = (Ids) => {
 };
 
 const getBooksCategories = (books) => {
-  const booksIds = books.map((b) => b.book_code);
+  console.log(" in getBooksCategories");
+  const booksIds = books.map((b) => b.id);//book_code היה 
   const uniqueArr = removeDuplicatesFromArray(booksIds);
   const q = getBooksCategoriesQuery(uniqueArr);
   return sqlConnect(q);
@@ -228,21 +210,6 @@ const getBooksCategories = (books) => {
 const getBooksCategoriesQuery = (booksIds) => {
   const valuesString = booksIds.join(', ');
   return `select * from book_categories where book_id in (${valuesString})`;
-};
-
-const getVolumsQuery = (filterModel) => {
-  const query =
-    getVolumsBaseQuery() +
-    filterByBookName(filterModel.book_name) +
-    filterByAuthorName(filterModel.author_name) +
-    filterByCategory(filterModel.categories) +
-    filterByPublicationYear(filterModel.publication_year);
-
-  return query;
-};
-//שאילתא השולפת את כל הספרים הקיימים במערכת
-const getVolumsBaseQuery = () => {
-  return 'select * from volumes v inner join books b on v.book_code=b.id where deleted=0 ';
 };
 
 const filterByBookName = (bookName) => {
@@ -262,15 +229,6 @@ const filterByPublicationYear = (publicationYear) => {
 const filterByAuthorName = (authorName) => {
   if (authorName) {
     return `and b.author_name='${authorName}' `;
-  }
-  return '';
-};
-
-const filterByCategory = (categories) => {
-  const valuesString = categories.join(', ');
-
-  if (categories.length) {
-    return `and exists(select * from book_categories bc where bc.book_id = v.book_code and bc.category_id in (${valuesString})) `;
   }
   return '';
 };
@@ -306,11 +264,9 @@ const getAddBookBorrowedAsBorrowedQuery = (userCode, volumeCode) => {
   return { query: q, values: values };
 };
 
-const changeAvailavility=(volume_id)=>{
-  const q=`UPDATE volumes set availability=1 where volume_id='${volume_id}'`;
+const changeAvailavility = (volume_id) => {
+  const q = `UPDATE volumes set availability=1 where volume_id='${volume_id}'`;
   return sqlConnect(q);
 }
-
-const runSqlQuery = (query) => { };
 
 module.exports = router;

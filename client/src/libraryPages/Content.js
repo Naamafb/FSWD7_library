@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { List, ListItem, ListItemText, Table, TableContainer, TableHead, TableRow, TableCell, Paper, Button } from '@mui/material';
-import { Book, CheckCircle, HighlightOff } from '@mui/icons-material';
+import { List, ListItem, ListItemText, Table, TableContainer,TableBody, TableHead, TableRow, TableCell, Paper, Button } from '@mui/material';
+import {  CheckCircle, HighlightOff } from '@mui/icons-material';
+import { Card, CardContent, CardHeader, Grid } from '@mui/material';
+
 import './bookList.css';
 
 const BookList = ({ books, onBookSelect }) => {
@@ -9,9 +11,10 @@ const BookList = ({ books, onBookSelect }) => {
             {books.map((book, index) => (
                 <ListItem key={index} onClick={() => onBookSelect(book)}>
                     <ListItemText
-                        primary={book.bookName}
-                        secondary={`${book.volumes[0].author_name} - ${book.categories.join(', ')}`}
-                        // secondary={`${book.author_name} - ${book.categories.join(', ')}`}
+                        primary={book.book.book_name}
+                        // secondary={`${book.volumes[0].author_name} - ${book.categoriesList.join(', ')}`}
+                        secondary={`${book.book.author_name}  - ${book.categoriesList.join(', ')}`}
+
 
                     />
                 </ListItem>
@@ -21,52 +24,63 @@ const BookList = ({ books, onBookSelect }) => {
 };
 
 // const BookComponent = (booksVolums) => {
-const BookComponent = (booksVolums,updateAfterChange) => {
+const BookComponent = (books, updateAfterChange) => {
 
-    console.log(booksVolums);
-    const [selectedBook, setSelectedBook] = useState(null);
-    const [books_volums, setBooksVolums] = useState();
+    console.log(books);
+    const [selectedBook, setSelectedBook] = useState("");
+    const [books_volums, setBooksVolums] = useState("");
     const user = JSON.parse(localStorage.getItem("currentUser"));
 
+    // useEffect(() => {
+    //     console.log('booksVolums');
+    //     console.log(books.booksVolums);
+    //     setSelectedBook(books.booksVolums)
+    // }, []);
     useEffect(() => {
-        console.log('booksVolums');
-        console.log(booksVolums.booksVolums);
-        setBooksVolums(booksVolums.booksVolums)
-    }, []);
+        console.log(books_volums);
+        console.log(selectedBook);
+    }, [books_volums, selectedBook]);
 
-   const handleBookSelect = (book) => {
+    const handleBookSelect = async (book) => {
+        console.log(book);
         setSelectedBook(book);
-        // if (book) {
-        //     const url = `http://localhost:3000/findbook//bookVolume/${book.id}`;
-        //     const requestOptions = {
-        //         method: "GET",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //         },
-        //     };
-        //     fetch(url, requestOptions)
-        //         .then((response) => {
-        //             console.log(response);
-        //             if (response.status === 200) {
-        //                 console.log("status 200");
-        //                 return response.json();
-        //             } else
-        //                 // if (response.status === 409) {
-        //                 throw "";
-        //             //  }
-        //         })
-        //         .then((u) => {
-        //             console.log(u);
-        //             //to do set volums
-        //         })
-        //         .catch((error) => {
-        //             console.error(error);
-        //             alert(error);
-        //         });
-        // }
-        // else {
-        //     alert("volume_id or owner_code is undefind");
-        // }
+        if (book) {
+            const url = `http://localhost:3000/findbook/bookVolume/${book.book.id}`;
+            const requestOptions = {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            };
+            await fetch(url, requestOptions)
+                .then((response) => {
+                    console.log(response);
+                    if (response.status === 200) {
+                        console.log("status 200");
+                        return response.json();
+                    } else
+                        // if (response.status === 409) {
+                        throw "";
+                    //  }
+                })
+                .then((u) => {
+                    console.log(u);
+                    // console.log(selectedBook);
+                    setBooksVolums(u);
+                    setSelectedBook(book);
+                    console.log(books_volums);
+                    console.log(selectedBook);
+
+                    //to do set volums
+                })
+                .catch((error) => {
+                    console.error(error);
+                    alert(error);
+                });
+        }
+        else {
+            alert("volume_id or owner_code is undefind");
+        }
     };
 
     //myReadingList
@@ -89,12 +103,13 @@ const BookComponent = (booksVolums,updateAfterChange) => {
                         return response.json();
                     } else
                         // if (response.status === 409) {
-                    throw "problem with borrow book";
+                        throw "problem with borrow book";
                     //  }
                 })
                 .then((u) => {
                     console.log(u);
-                    () => updateAfterChange();
+                    console.log("befor update");
+                    handleBookSelect(selectedBook);
                 })
                 .catch((error) => {
                     console.error(error);
@@ -125,12 +140,13 @@ const BookComponent = (booksVolums,updateAfterChange) => {
                         return response.json();
                     } else
                         // if (response.status === 409) {
-                    throw "problem with add Book To Wish list";
+                        throw "problem with add Book To Wish list";
                     //  }
                 })
                 .then((u) => {
                     console.log(u);
-                    () => updateAfterChange();
+                    console.log("befor update");
+                    handleBookSelect(selectedBook);
                 })
                 .catch((error) => {
                     console.error(error);
@@ -142,20 +158,24 @@ const BookComponent = (booksVolums,updateAfterChange) => {
         }
     }
 
-    return (<div>
-        {books_volums ?
+    return (
+    <div>
+        {books ?
             <div className="app-container">
-
+                <div className="book-list-container">
+                    {/* <h1 style={{ fontSize: '1.5rem' }}>Book List</h1> */}
+                    <BookList books={books.booksVolums} onBookSelect={handleBookSelect} />
+                </div>
                 <div className="book-details-container">
-                    <h1 style={{ fontSize: '1.5rem' }}>Volume List</h1>
+                    {/* <h1 style={{ fontSize: '1.5rem' }}>Volume List</h1> */}
 
-                    {selectedBook && (
+                    {selectedBook && books_volums && (
 
                         <div className="book-details">
-                            <h2>Book name: {selectedBook.bookName}</h2>
-                            <h4>Author name: {selectedBook.volumes[0].author_name}</h4>
-                            <h4>Books categories :{selectedBook.categories.join(', ')}</h4>
-                            <h4>Book publication year: {selectedBook.volumes[0].publication_year}</h4>
+                            <h2>Book name: {selectedBook.book.book_name}</h2>
+                            <h4>Author name: {selectedBook.book.author_name}</h4>
+                            <h4>Books categories :{selectedBook.categoriesList.join(', ')}</h4>
+                            <h4>Book publication year: {selectedBook.book.publication_year}</h4>
                             <TableContainer component={Paper} className="copies-table">
                                 <Table>
                                     <TableHead>
@@ -164,9 +184,9 @@ const BookComponent = (booksVolums,updateAfterChange) => {
                                             <TableCell>Availability</TableCell>
                                         </TableRow>
                                     </TableHead>
-                                    {selectedBook.volumes.map((volume, index) => (
+                                    {books_volums.map((volume, index) => (
                                         <TableRow key={index}>
-                                            <TableCell>{volume.owner[0].first_name}</TableCell>
+                                            <TableCell>{volume.owner.first_name}</TableCell>
                                             <TableCell>{volume.availability == '0' ? <CheckCircle className="available-icon" /> : <HighlightOff className="unavailable-icon" />}</TableCell>
                                             {volume.availability == '0' ?
                                                 <Button onClick={() => borrowBook(volume.volume_id, user.id)}>Borrow book</Button>
@@ -180,10 +200,7 @@ const BookComponent = (booksVolums,updateAfterChange) => {
                         </div>
                     )}
                 </div>
-                <div className="book-list-container">
-                    <h1 style={{ fontSize: '1.5rem' }}>Book List</h1>
-                    <BookList books={booksVolums.booksVolums} onBookSelect={handleBookSelect} />
-                </div>
+
             </div>
             : <div>no results</div>
         }

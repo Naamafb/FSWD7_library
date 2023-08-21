@@ -12,6 +12,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Grid from '@mui/material/Grid';
+import { Divider } from '@mui/material';
 
 function FindBook() {
 
@@ -60,7 +61,8 @@ function FindBook() {
         event.preventDefault();
         console.log(bookName);
         const filterModel = { book_name: bookName, publication_year: publicationYear, categories: selectedCategories, author_name: authorName }
-        const url = "http://localhost:3000/findbook/filter";
+        // const url = "http://localhost:3000/findbook/filter";
+        const url = "http://localhost:3000/findbook/filterBooks";
         const requestOptions = {
             method: "POST",
             headers: {
@@ -112,9 +114,14 @@ function FindBook() {
         }
 
     };
+    const bdika=()=>{
+        alert("its okkkk")
+    }
 
     return (
         <div className="App">
+                            <br></br>
+
             <form onSubmit={handleSearch} className="searchForm">
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6} md={3}>
@@ -182,6 +189,7 @@ function FindBook() {
                         </FormControl>
                     </Grid>
                 </Grid>
+                <br></br>
                 <Button
                     type="submit"
                     variant="contained"
@@ -191,9 +199,14 @@ function FindBook() {
                 </Button>
             </form>
             <div>
+            <br></br>
+
+            <Divider />
+
                 {showFilteredBooks ?
                     // (<BookComponent booksVolums={volums}/>)
-                    (<BookComponent booksVolums={volums} updateAfterChange={handleSearch}/>)
+                    (<BookComponent booksVolums={volums} updateAfterChange={bdika}/>
+                    )
                     : (<div> no results </div>)
                 }
             </div>
