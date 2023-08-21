@@ -76,24 +76,6 @@ router.post("/book_categories", function (req, res) {
             res.status(500).send("An error occurred");
         })
 });
-const returnBookVolum = (volume_id) => {
-    const query = `SELECT DISTINCT *
-    FROM (
-      SELECT *
-      FROM library_fswd7.books
-      JOIN library_fswd7.volumes ON books.id = volumes.book_code
-      WHERE volume_id = '${volume_id}' 
-    ) AS joined_result`;
-    sqlConnect(query)
-        .then((results) => {
-            console.log(results);
-            res.status(200).json(results)
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send("An error occurred");
-        });
-};
 
 //בודק האם הספר קיים ומחזיר אותו אם כן
 router.get("/:book_name", function (req, res) {

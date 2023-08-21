@@ -7,8 +7,6 @@ router.post("/", function (req, res) {
   console.log('login router');
   const { name, password } = req.body;
 
-  console.log(name);
-  console.log(password);
   if (!name || !password) {
     res.status(400).send("Missing username or password");
     return;
@@ -22,10 +20,7 @@ router.post("/", function (req, res) {
   
   sqlConnect(query)
     .then((results) => {
-      console.log(results[0]);
-      console.log(results.length);
       if (results.length === 1){
-        //  && results[0].password === password) {
         
         res.status(200).json(results[0]);
       } else {

@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { List, ListItem, ListItemText, Table, TableContainer,TableBody, TableHead, TableRow, TableCell, Paper, Button } from '@mui/material';
-import {  CheckCircle, HighlightOff } from '@mui/icons-material';
+import { List, ListItem, ListItemText, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Paper, Button } from '@mui/material';
+import { CheckCircle, HighlightOff } from '@mui/icons-material';
 import { Card, CardContent, CardHeader, Grid } from '@mui/material';
 
 import './bookList.css';
 
 const BookList = ({ books, onBookSelect }) => {
     return (
-        <List className="book-list">
+        <List className="book-list" style={{ maxHeight: '300px', overflow: 'auto' }}>
+            <h3>Books list</h3>
             {books.map((book, index) => (
                 <ListItem key={index} onClick={() => onBookSelect(book)}>
                     <ListItemText
                         primary={book.book.book_name}
-                        // secondary={`${book.volumes[0].author_name} - ${book.categoriesList.join(', ')}`}
                         secondary={`${book.book.author_name}  - ${book.categoriesList.join(', ')}`}
-
-
                     />
                 </ListItem>
             ))}
@@ -37,7 +35,6 @@ const BookComponent = (books) => {
 
     const handleBookSelect = async (book) => {
         console.log(book);
-        setSelectedBook(book);
         if (book) {
             const url = `http://localhost:3000/findbook/bookVolume/${book.book.id}`;
             const requestOptions = {
@@ -52,19 +49,14 @@ const BookComponent = (books) => {
                     if (response.status === 200) {
                         console.log("status 200");
                         return response.json();
-                    } else
-                        // if (response.status === 409) {
-                        throw "";
-                    //  }
+                    } else {
+                        throw "book Volume fetch is wrong";
+                    }
                 })
                 .then((u) => {
                     console.log(u);
-                    // console.log(selectedBook);
                     setBooksVolums(u);
                     setSelectedBook(book);
-                    console.log(books_volums);
-                    console.log(selectedBook);
-
                     //to do set volums
                 })
                 .catch((error) => {
@@ -94,7 +86,7 @@ const BookComponent = (books) => {
                     if (response.status === 200) {
                         console.log("status 200");
                         return response.json();
-                    } else{
+                    } else {
                         throw "problem with borrow book";
                     }
                 })
@@ -151,52 +143,49 @@ const BookComponent = (books) => {
     }
 
     return (
-    <div>
-        {books ?
-            <div className="app-container">
-                <div className="book-list-container">
-                    {/* <h1 style={{ fontSize: '1.5rem' }}>Book List</h1> */}
-                    <BookList books={books.booksVolums} onBookSelect={handleBookSelect} />
+        <div>
+            {books ?
+                <div className="app-container">
+                    <div className="book-list-container">
+                        <BookList books={books.booksVolums} onBookSelect={handleBookSelect} />
+                    </div>
+                    <div className="book-details-container">
+
+                        {selectedBook && books_volums && (
+
+                            <div className="book-details">
+                                <h3>Volume list</h3>
+                                <h4>Book name: {selectedBook.book.book_name}</h4>
+                                <p>Author name: {selectedBook.book.author_name} || Books categories :{selectedBook.categoriesList.join(', ')} || Book publication year: {selectedBook.book.publication_year}</p>
+                                <TableContainer component={Paper} className="copies-table" style={{ maxHeight: '200px', overflow: 'auto' }}>
+                                    <Table>
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell>Owner</TableCell>
+                                                <TableCell>Availability</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        {books_volums.map((volume, index) => (
+                                            <TableRow key={index}>
+                                                <TableCell>{volume.owner.first_name}</TableCell>
+                                                <TableCell>{volume.availability == '0' ? <CheckCircle className="available-icon" /> : <HighlightOff className="unavailable-icon" />}</TableCell>
+                                                {volume.availability == '0' ?
+                                                    <Button onClick={() => borrowBook(volume.volume_id, user.id)}>Borrow book</Button>
+                                                    :
+                                                    <Button onClick={() => addBookToWishlist(volume.volume_id, user.id)}>Add book to wishlist</Button>
+                                                }
+                                            </TableRow>
+                                        ))}
+                                    </Table>
+                                </TableContainer>
+                            </div>
+                        )}
+                    </div>
+
                 </div>
-                <div className="book-details-container">
-                    {/* <h1 style={{ fontSize: '1.5rem' }}>Volume List</h1> */}
-
-                    {selectedBook && books_volums && (
-
-                        <div className="book-details">
-                            <h2>Book name: {selectedBook.book.book_name}</h2>
-                            <h4>Author name: {selectedBook.book.author_name}</h4>
-                            <h4>Books categories :{selectedBook.categoriesList.join(', ')}</h4>
-                            <h4>Book publication year: {selectedBook.book.publication_year}</h4>
-                            <TableContainer component={Paper} className="copies-table">
-                                <Table>
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell>Owner</TableCell>
-                                            <TableCell>Availability</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    {books_volums.map((volume, index) => (
-                                        <TableRow key={index}>
-                                            <TableCell>{volume.owner.first_name}</TableCell>
-                                            <TableCell>{volume.availability == '0' ? <CheckCircle className="available-icon" /> : <HighlightOff className="unavailable-icon" />}</TableCell>
-                                            {volume.availability == '0' ?
-                                                <Button onClick={() => borrowBook(volume.volume_id, user.id)}>Borrow book</Button>
-                                                :
-                                                <Button onClick={() => addBookToWishlist(volume.volume_id, user.id)}>Add book to wishlist</Button>
-                                            }
-                                        </TableRow>
-                                    ))}
-                                </Table>
-                            </TableContainer>
-                        </div>
-                    )}
-                </div>
-
-            </div>
-            : <div>no results</div>
-        }
-    </div>
+                : <div>no results</div>
+            }
+        </div>
     );
 };
 

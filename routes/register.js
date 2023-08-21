@@ -18,9 +18,6 @@ router.post("/", function (req, res) {
         .then((results) => {
           findUserId(username)
             .then((res) => {
-              userid=res[0].id;
-              console.log(res[0].id);
-              console.log(userid);
               newPassword(res[0].id, password).then((console.log("new user")))
             })
             .catch(() => {

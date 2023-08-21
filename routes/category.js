@@ -9,8 +9,6 @@ router.get("/", function (req, res) {
     console.log("categori");
     sqlConnect(query)
         .then((results) => {
-            console.log("category ok");
-            // console.log(json(results));
             res.status(200).json(results);
         })
         .catch((err) => {

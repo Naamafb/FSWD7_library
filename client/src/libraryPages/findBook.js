@@ -15,7 +15,6 @@ import Grid from '@mui/material/Grid';
 import { Divider } from '@mui/material';
 
 function FindBook() {
-
     const [bookName, setBookName] = useState('');
     const [publicationYear, setPublicationYear] = useState('');
     const [authorName, setAuthorName] = useState('')
@@ -24,8 +23,6 @@ function FindBook() {
 
     const [volums, setV] = useState([]);
     const [showFilteredBooks, setBooks] = useState(false);
-
-
 
     useEffect(() => {
         console.log("useeffect");
@@ -46,7 +43,6 @@ function FindBook() {
             })
             .then((data) => {
                 // התוצאה כאן היא מערך של הקטגוריות
-                console.log(data);
                 localStorage.setItem('myCategoriesList', JSON.stringify(data));
                 setCategories(data);
             })
@@ -61,7 +57,6 @@ function FindBook() {
         event.preventDefault();
         console.log(bookName);
         const filterModel = { book_name: bookName, publication_year: publicationYear, categories: selectedCategories, author_name: authorName }
-        // const url = "http://localhost:3000/findbook/filter";
         const url = "http://localhost:3000/findbook/filterBooks";
         const requestOptions = {
             method: "POST",
@@ -77,21 +72,17 @@ function FindBook() {
                 if (response.status === 200) {
                     console.log("status 200");
                     return response.json();
-                } else
-                    // if (response.status === 409) {
+                } else {
                     throw "problem with search book with filter";
-                //  }
+                }
             })
             .then((u) => {
                 console.log(u);
                 if (u.length > 0) {
-                    console.log(volums);
                     setV(u);
-                    console.log(volums);
                     setBooks(true);
-                    localStorage.setItem('myFilterBooksList', JSON.stringify(u));
                 }
-                else{
+                else {
                     setBooks(false)
                 }
                 console.log("ok search");
@@ -117,8 +108,7 @@ function FindBook() {
 
     return (
         <div className="App">
-                            <br></br>
-
+            <br></br>
             <form onSubmit={handleSearch} className="searchForm">
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6} md={3}>
@@ -163,9 +153,9 @@ function FindBook() {
                                 onChange={handleCategoryChange}
                                 renderValue={
                                     (selected) =>
-                                    categories.filter(category =>
-                                        selected.includes(`${category.id}`)).map(category =>
-                                            category.category_name).join(', ')
+                                        categories.filter(category =>
+                                            selected.includes(`${category.id}`)).map(category =>
+                                                category.category_name).join(', ')
                                 }
                             >
                                 {categories.map((category, index) => (
@@ -192,12 +182,12 @@ function FindBook() {
                 </Button>
             </form>
             <div>
-            <br></br>
+                <br></br>
 
-            <Divider />
+                <Divider />
 
                 {showFilteredBooks ?
-                    (<BookComponent booksVolums={volums}/>
+                    (<BookComponent booksVolums={volums} />
                     )
                     : (<div> no results </div>)
                 }

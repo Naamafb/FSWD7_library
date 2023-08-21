@@ -11,16 +11,10 @@ router.post('/filterBooks', function (req, res) {
       if (books.length === 0) {
         return res.status(200).json([]);
       }
-      console.log("books");
-      console.log(books);
       getBooksCategories(books)
         .then((booksCategories) => {
-          console.log("booksCategories");
-          console.log(booksCategories);
           getCategories(booksCategories)
             .then((categories) => {
-              console.log("categories");
-              console.log(categories);
               const result = generateReaultBookList(books, booksCategories, categories);
               res.status(200).json(result);
             })
@@ -69,7 +63,6 @@ const filterByCategories = (categories) => {
   return '';
 };
 
-
 router.get('/bookVolume/:book_id', function (req, res) {
   const book_id = req.params.book_id;
 
@@ -78,12 +71,10 @@ router.get('/bookVolume/:book_id', function (req, res) {
       if (volums.length === 0) {
         return res.status(200).json([]);
       }
-
       getUsers(volums)
         .then((users) => {
           //לחבר בין כרכים למשתמשים
           const result = generateReaultVolumeUserList(volums, users);
-          console.log(result);
           res.status(200).json(result);
         })
         .catch((err) => {
@@ -164,7 +155,6 @@ const generateReaultBookList = (books, booksCategories, categories) => {
     );
     result.push({ book, categoriesList })
   }
-  console.log(result[0]);
   return result
 };
 
