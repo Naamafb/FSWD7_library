@@ -1,11 +1,13 @@
 # FSWD7_library
-# פרויקט מסכם – יישום מלא – end-to-end ספריה ציבורית בפול סטאק 
-בהפרויקט יש אפשרות הרשמה\כניסה של משתמש חדש
-משתמש קיים שנכנס למערכת יש לו אפשרות:
-1. לעדכן את הפרטים שלו
-2. לעשות חיפוש בספרי הספריה ולהשאיל\להכנס לרשימת 
-3. לראות איזה ספרים הוא השאיל\באיזה הוא ברשימת המתנה
-4. להוסיף ספר חדש
-5. לבדוק מה מצב הספרים שלו וראות אצל מי הם\ למחוק
-6. לראות הודעות שנשלחו לו
+# Collaborative Library Site
+This project showcases an end-to-end library system proficient in user registration, book search, borrowing, and status tracking. Key features include:
+
+Backend Technologies: Implemented using Node.js and Express for robust server-side functionalities.
+MySQL Database: Designed and implemented a structured MySQL database for efficient data management within the system.
+RESTful API Configuration: Configured a seamless REST API for efficient communication between server and client.
+Node.js & Express Proficiency: Leveraged for optimized server-side development and performance.
+Communication Enhancement: Implemented protocols and Fetch requests, enhancing system accessibility and usability.
+Client-Side Development: Utilized React for developing a friendly, responsive user interface, ensuring an optimal experience for users.
+
+
 
