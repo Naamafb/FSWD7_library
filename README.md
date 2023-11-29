@@ -1,5 +1,5 @@
-# FSWD7_library
 # Collaborative Library Site
+
 This project showcases an end-to-end library system proficient in user registration, book search, borrowing, and status tracking. 
 Key features include:
 
