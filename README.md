@@ -2,6 +2,7 @@
 
 This project showcases an end-to-end library system proficient in user registration, book search, borrowing, and status tracking. 
 Key features include:
+
 Implemented using Node.js and Express for robust server-side functionalities.
 
 Designed and implemented a structured MySQL database for efficient data management within the system.
